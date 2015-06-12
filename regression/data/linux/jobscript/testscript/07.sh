@@ -1,6 +1,6 @@
 #!/bin/sh
 
-if [ $PATH -ne "/home/cuto" ]; then
+if [ $PATH = "/home/cuto" ]; then
     echo "[err] Invalid path."
     exit 1
 fi
