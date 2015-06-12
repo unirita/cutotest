@@ -21,5 +21,14 @@ func TestRegression(t *testing.T) {
 
 	m := util.NewMaster()
 	m.SetConfig("master.ini")
-	m.Run("inst_test")
+	rc, err := m.Run("inst_test")
+	if err != nil {
+		t.Fatalf("Master run failed: %s", err)
+	}
+	if rc != 0 {
+		t.Errorf("Master RC[%d] is not 0.", rc)
+	}
+	if util.HasLogError(s.ConfigPath) {
+		t.Errorf("There is error log in [%s]", s.ConfigPath)
+	}
 }

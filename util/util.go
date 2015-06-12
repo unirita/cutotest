@@ -1,9 +1,12 @@
 package util
 
 import (
+	"bufio"
 	"errors"
 	"os"
 	"path/filepath"
+	"regexp"
+	"strings"
 	"text/template"
 )
 
@@ -53,4 +56,30 @@ func ComplementConfig(filename string) error {
 	}
 
 	return nil
+}
+
+func HasLogError(path string) bool {
+	file, err := os.Open(path)
+	if err != nil {
+		return true
+	}
+	defer file.Close()
+
+	s := bufio.NewScanner(file)
+	hasError := false
+	for s.Scan() {
+		line := s.Text()
+
+		if strings.Contains(line, "[ERR]") {
+			hasError = true
+			break
+		}
+		errCodePtn := regexp.MustCompile("CT[MS][0-9]{3}E")
+		if errCodePtn.MatchString(line) {
+			hasError = true
+			break
+		}
+	}
+
+	return hasError
 }
