@@ -1,9 +1,9 @@
 #!/bin/sh
 
-if [ $PATH != "/home/cuto" ]; then
-    echo "[err] Invalid path. - $PATH"
-    exit 1
-fi
+#if [ $PATH != "/home/cuto" ]; then
+#    echo "[err] Invalid path. - $PATH"
+#    exit 1
+#fi
 
 if [ $# -ne 1 ]; then
     echo "[err] Invalid Argument Count. - $#"
