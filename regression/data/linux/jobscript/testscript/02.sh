@@ -3,13 +3,13 @@
 if [ $RC -ne 0 ]; then
     echo "[err] Invalid RC : $RC"
 fi
-if [ $SD -eq "" ]; then
+if [ $SD = "" ]; then
     echo "[err] Invalid SD : $SD"
 fi
-if [ $ED -eq "" ]; then
+if [ $ED = "" ]; then
     echo "[err] Invalid ED : $ED"
 fi
-if [ $OUT -ne "" ]; then
+if [ $OUT != "" ]; then
     echo "[err] Invalid OUT : $OUT"
 fi
 
