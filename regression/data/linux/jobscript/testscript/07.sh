@@ -1,7 +1,7 @@
 #!/bin/sh
 
 if [ $PATH != "/home/cuto" ]; then
-    echo "[err] Invalid path."
+    echo "[err] Invalid path. - $PATH"
     exit 1
 fi
 
