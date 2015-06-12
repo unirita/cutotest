@@ -15,7 +15,11 @@ type Servant struct {
 
 func NewServant() *Servant {
 	s := new(Servant)
-	s.Command = filepath.Join(cutoroot, "bin", "servant.exe")
+	if osname == "windows" {
+		s.Command = filepath.Join(cutoroot, "bin", "servant.exe")
+	} else {
+		s.Command = filepath.Join(cutoroot, "bin", "servant")
+	}
 	return s
 }
 

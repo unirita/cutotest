@@ -17,7 +17,11 @@ type Master struct {
 
 func NewMaster() *Master {
 	m := new(Master)
-	m.Command = filepath.Join(cutoroot, "bin", "master.exe")
+	if osname == "windows" {
+		m.Command = filepath.Join(cutoroot, "bin", "master.exe")
+	} else {
+		m.Command = filepath.Join(cutoroot, "bin", "master")
+	}
 	return m
 }
 
