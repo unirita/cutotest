@@ -29,6 +29,15 @@ func (m *Master) SetConfig(filename string) {
 	m.ConfigPath = filepath.Join(cutoroot, "bin", filename)
 }
 
+func (m *Master) SyntaxCheck(jobnet string) (int, error) {
+	if len(m.ConfigPath) == 0 {
+		m.cmd = exec.Command(m.Command, "-n", jobnet)
+	} else {
+		m.cmd = exec.Command(m.Command, "-n", jobnet, "-c", m.ConfigPath)
+	}
+	return m.exec()
+}
+
 func (m *Master) Run(jobnet string) (int, error) {
 	if len(m.ConfigPath) == 0 {
 		m.cmd = exec.Command(m.Command, "-n", jobnet, "-s")
