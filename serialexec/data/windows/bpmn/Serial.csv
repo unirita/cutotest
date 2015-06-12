@@ -1,0 +1,5 @@
+ジョブ名,ノード名,ポート番号,実行ファイル,パラメータ,環境変数,作業フォルダ,警告コード,警告出力,異常コード,異常出力,タイムアウト時間
+env.bat,,,,,ENV1=TEST1+ENV2=TEST2,,,,,,
+param.bat,,,,test1 test2,,,,,,,
+work.bat,,,,,,$SSROOT$\jobscript\otherpath,,,,,
+path.bat,,,$SSROOT$\jobscript\otherpath\path.bat,,,,,,,,
