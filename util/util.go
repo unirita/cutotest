@@ -35,6 +35,7 @@ func DeployTestData(testname string) {
 	srcDir := filepath.Join(basePath, testname, "data", osname)
 	targetDir := cutoroot
 	CopyDir(srcDir, targetDir)
+	PermitExecRecursive(targetDir)
 }
 
 func ComplementConfig(filename string) error {

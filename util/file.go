@@ -68,3 +68,24 @@ func CopyDir(srcDir string, targetDir string) error {
 
 	return nil
 }
+
+func PermitExecRecursive(path string) error {
+	rootfi, err := os.Stat(path)
+	if err != nil {
+		return err
+	}
+	if !rootfi.IsDir() {
+		return os.Chmod(path, 0755)
+	}
+
+	fis, err := ioutil.ReadDir(path)
+	if err != nil {
+		return err
+	}
+	for _, fi := range fis {
+		childPath := filepath.Join(path, fi.Name())
+		PermitExecRecursive(childPath)
+	}
+
+	return nil
+}
