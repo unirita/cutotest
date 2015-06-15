@@ -1,0 +1,4 @@
+CTM001I CUTO MASTER STARTED. PID [1152] VERSION [0.1.0b]
+CTM011E [c:\cuto\bpmn\EndWithoutEndEvent.bpmn] IS NOT EXACT FORMAT. REASON [There is no element which connects with endEvent.]
+CTM002I CUTO MASTER ENDED. RC [1]
+1 
