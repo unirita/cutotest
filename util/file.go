@@ -6,6 +6,7 @@ import (
 	"io/ioutil"
 	"os"
 	"path/filepath"
+	"strings"
 )
 
 func ClearDir(path string) {
@@ -88,4 +89,29 @@ func PermitExecRecursive(path string) error {
 	}
 
 	return nil
+}
+
+func IsExistNoEmptyFile(path string) bool {
+	fi, err := os.Stat(path)
+	if err != nil {
+		return false
+	}
+	return fi.Size() > 0
+}
+
+func ContainsInFile(path string, substr string) bool {
+	file, err := os.Open(path)
+	if err != nil {
+		return false
+	}
+	defer file.Close()
+
+	s := bufio.NewScanner(file)
+	for s.Scan() {
+		if strings.Contains(s.Text(), substr) {
+			return true
+		}
+	}
+
+	return false
 }

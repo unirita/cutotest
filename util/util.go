@@ -3,11 +3,14 @@ package util
 import (
 	"bufio"
 	"errors"
+	"fmt"
+	"io/ioutil"
 	"os"
 	"path/filepath"
 	"regexp"
 	"strings"
 	"text/template"
+	"time"
 )
 
 type ConfigParam struct {
@@ -83,4 +86,44 @@ func HasLogError(path string) bool {
 	}
 
 	return hasError
+}
+
+func GetCutoRoot() string {
+	return cutoroot
+}
+
+func GetDBDirPath() string {
+	return filepath.Join(cutoroot, "data", "cuto.sqlite")
+}
+
+func IsWindows() bool {
+	return osname == "windows"
+}
+
+func FindJoblog(dirname string, nid int, jobname string) []string {
+	now := time.Now()
+	datestr := fmt.Sprintf("%04d%02d%02d", now.Year(), now.Month(), now.Day())
+	dirpath := filepath.Join(cutoroot, dirname, datestr)
+	joblogs := make([]string, 0)
+	dirinfo, err := os.Stat(dirpath)
+	if err != nil {
+		return joblogs
+	}
+	if !dirinfo.IsDir() {
+		return joblogs
+	}
+
+	fis, err := ioutil.ReadDir(dirpath)
+	if err != nil {
+		return joblogs
+	}
+
+	prefix := fmt.Sprintf("%d.%s", nid, jobname)
+	for _, fi := range fis {
+		if strings.HasPrefix(fi.Name(), prefix) {
+			joblogs = append(joblogs, filepath.Join(dirpath, fi.Name()))
+		}
+	}
+
+	return joblogs
 }
