@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<definitions>
+  <process>
+    <startEvent id="start"/>
+    <endEvent id="end"/>
+    <serviceTask id="job1" name="job1"/>
+    <serviceTask id="job2" name="job2.sh"/>
+    <serviceTask id="param" name="param.sh"/>
+    <serviceTask id="env" name="env.sh"/>
+    <serviceTask id="work" name="work.sh"/>
+    <serviceTask id="path" name="path.sh"/>
+    <sequenceFlow sourceRef="start" targetRef="job1"/>
+    <sequenceFlow sourceRef="job1" targetRef="job2"/>
+    <sequenceFlow sourceRef="job2" targetRef="param"/>
+    <sequenceFlow sourceRef="param" targetRef="env"/>
+    <sequenceFlow sourceRef="env" targetRef="work"/>
+    <sequenceFlow sourceRef="work" targetRef="path"/>
+    <sequenceFlow sourceRef="path" targetRef="end"/>
+  </process>
+</definitions>
