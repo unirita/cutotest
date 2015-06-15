@@ -6,3 +6,5 @@ echo param2=$2
 sleep 1
 echo param.sh end.
 
+exit 2
+

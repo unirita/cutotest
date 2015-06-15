@@ -5,3 +5,5 @@ echo current=`pwd`
 sleep 1
 echo work.sh end.
 
+exit 3
+
