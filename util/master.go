@@ -1,6 +1,7 @@
 package util
 
 import (
+	"bytes"
 	"errors"
 	"os/exec"
 	"path/filepath"
@@ -12,6 +13,7 @@ type Master struct {
 	Command    string
 	ConfigPath string
 	Timeout    int
+	Stderr     string
 	cmd        *exec.Cmd
 }
 
@@ -48,9 +50,14 @@ func (m *Master) Run(jobnet string) (int, error) {
 }
 
 func (m *Master) exec() (int, error) {
+	buf := new(bytes.Buffer)
+	m.cmd.Stderr = buf
 	if err := m.cmd.Start(); err != nil {
 		return -1, err
 	}
+	defer func() {
+		m.Stderr = buf.String()
+	}()
 
 	err := m.waitTimeout()
 	if err != nil {

@@ -137,7 +137,11 @@ func executeOneNetwork(t *testing.T, chRC chan<- int) {
 	rc, err := m.Run("15seconds")
 	if err != nil {
 		t.Logf("Master run failed: %s", err)
-		chRC <- -1
+		rc = -1
 	}
+	if rc != 0 {
+		t.Logf("Master stderr: %s", m.Stderr)
+	}
+
 	chRC <- rc
 }
