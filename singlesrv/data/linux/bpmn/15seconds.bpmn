@@ -1,0 +1,2 @@
+<?xml version="1.0" encoding="utf-8"?>
+<definitions><process><serviceTask id="$A$1" name="job"/><sequenceFlow sourceRef="$A$1" targetRef="endevent"/><startEvent id="startevent"/><sequenceFlow sourceRef="startevent" targetRef="$A$1"/><endEvent id="endevent"/></process></definitions>
