@@ -69,6 +69,34 @@ func (c *Connection) SelectJob(nid int, jid string) (*Job, error) {
 	return j, nil
 }
 
+func (c *Connection) SelectJobsByCond(condition string) ([]*Job, error) {
+	query := "SELECT ID, JOBID, JOBNAME, STARTDATE, ENDDATE, STATUS, RC FROM JOB WHERE " + condition
+	jobs := make([]*Job, 0)
+	rows, err := c.db.Query(query)
+	if err != nil {
+		return jobs, err
+	}
+	defer rows.Close()
+
+	for rows.Next() {
+		j := new(Job)
+		rows.Scan(&j.NID, &j.JID, &j.Name, &j.Start, &j.End, &j.Status, &j.RC)
+		jobs = append(jobs, j)
+	}
+	return jobs, nil
+}
+
+func (c *Connection) CountJobs(nid int) (int, error) {
+	query := "SELECT COUNT(*) FROM JOB WHERE ID = ?"
+	row := c.db.QueryRow(query, nid)
+	var count int
+	err := row.Scan(&count)
+	if err != nil {
+		return -1, err
+	}
+	return count, nil
+}
+
 func (c *Connection) Close() {
 	c.db.Close()
 }
