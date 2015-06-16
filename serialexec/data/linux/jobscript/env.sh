@@ -6,5 +6,5 @@ echo ENV2=$ENV2
 sleep 1
 echo env.sh end.
 
-exit 1
+exit 2
 
