@@ -26,6 +26,7 @@ func TestRegression(t *testing.T) {
 		t.Fatalf("Master run failed: %s", err)
 	}
 	if rc != 0 {
+		t.Logf("Master stderr: %s", m.Stderr)
 		t.Errorf("Master RC[%d] is not 0.", rc)
 	}
 	if util.HasLogError(s.ConfigPath) {
