@@ -27,7 +27,7 @@ func InitCutoRoot() {
 	ClearDir(filepath.Join(cutoroot, "joblog"))
 	ClearDir(filepath.Join(cutoroot, "jobscript"))
 	ClearDir(filepath.Join(cutoroot, "log"))
-	ClearDir(filepath.Join(cutoroot, "temp"))
+	//ClearDir(filepath.Join(cutoroot, "temp"))
 
 	emptyDbPath := filepath.Join(basePath, "util", "empty.sqlite")
 	testDbPath := filepath.Join(cutoroot, "data", "cuto.sqlite")
