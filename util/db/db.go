@@ -56,6 +56,22 @@ func (c *Connection) SelectJobNetwork(id int) (*JobNetwork, error) {
 	return n, nil
 }
 
+func (c *Connection) SelectJobNetworksByCond(cond string) ([]*JobNetwork, error) {
+	query := "SELECT ID, JOBNETWORK, STARTDATE, ENDDATE, STATUS FROM JOBNETWORK WHERE " + cond
+	networks := make([]*JobNetwork, 0)
+	rows, err := c.db.Query(query)
+	if err != nil {
+		return networks, err
+	}
+
+	for rows.Next() {
+		n := new(JobNetwork)
+		rows.Scan(&n.ID, &n.Name, &n.Start, &n.End, &n.Status)
+		networks = append(networks, n)
+	}
+	return networks, nil
+}
+
 func (c *Connection) SelectJob(nid int, jid string) (*Job, error) {
 	query := "SELECT JOBNAME, STARTDATE, ENDDATE, STATUS, RC FROM JOB WHERE ID = ? AND JOBID = ?"
 	row := c.db.QueryRow(query, nid, jid)

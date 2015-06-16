@@ -88,3 +88,56 @@ func Test255Job(t *testing.T) {
 		t.Errorf("Unexpected Job[%s] executed after branch.", jobs[0].JID)
 	}
 }
+
+func Test100Network(t *testing.T) {
+	util.InitCutoRoot()
+	util.DeployTestData("singlesrv")
+	util.ComplementConfig("master.ini")
+	util.ComplementConfig("servant.ini")
+
+	s := util.NewServant()
+	s.SetConfig("servant.ini")
+	if err := s.Start(); err != nil {
+		t.Fatalf("Servant start failed: %s", err)
+	}
+	defer s.Kill()
+
+	chRC := make(chan int, 100)
+	for i := 0; i < 100; i++ {
+		go executeOneNetwork(t, chRC)
+	}
+
+	for i := 0; i < 100; i++ {
+		rc := <-chRC
+		if rc != 0 {
+			t.Errorf("Master returns error RC[%d]", rc)
+		}
+	}
+
+	// Check database.
+	conn, err := db.Open(util.GetDBDirPath())
+	if err != nil {
+		t.Fatalf("DB file open failed: %v", err)
+	}
+	defer conn.Close()
+
+	cond := "JOBNETWORK = '15seconds'"
+	networks, err := conn.SelectJobNetworksByCond(cond)
+	if err != nil {
+		t.Fatalf("Unexpected DB error occured: %v", err)
+	}
+	if len(networks) != 100 {
+		t.Error("Number of JOBNETWORK records not equals Number of executed networks.")
+	}
+}
+
+func executeOneNetwork(t *testing.T, chRC chan<- int) {
+	m := util.NewMaster()
+	m.SetConfig("master.ini")
+	rc, err := m.Run("15seconds")
+	if err != nil {
+		t.Logf("Master run failed: %s", err)
+		chRC <- -1
+	}
+	chRC <- rc
+}
