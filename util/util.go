@@ -92,6 +92,10 @@ func GetCutoRoot() string {
 	return cutoroot
 }
 
+func GetLogPath(filename string) string {
+	return filepath.Join(cutoroot, "log", filename)
+}
+
 func GetDBDirPath() string {
 	return filepath.Join(cutoroot, "data", "cuto.sqlite")
 }

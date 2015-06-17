@@ -29,7 +29,8 @@ func TestRegression(t *testing.T) {
 		t.Logf("Master stderr: %s", m.Stderr)
 		t.Errorf("Master RC[%d] is not 0.", rc)
 	}
-	if util.HasLogError(s.ConfigPath) {
-		t.Errorf("There is error log in [%s]", s.ConfigPath)
+	logPath := util.GetLogPath("servant.log")
+	if util.HasLogError(logPath) {
+		t.Errorf("There is error log in [%s]", logPath)
 	}
 }

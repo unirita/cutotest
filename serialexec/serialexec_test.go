@@ -38,8 +38,9 @@ func TestSerialExecution(t *testing.T) {
 	if rc != 0 {
 		t.Errorf("Master RC[%d] is not 0.", rc)
 	}
-	if util.HasLogError(m.ConfigPath) {
-		t.Errorf("There is error log in [%s]", m.ConfigPath)
+	logPath := util.GetLogPath("master.log")
+	if util.HasLogError(logPath) {
+		t.Errorf("There is error log in [%s]", logPath)
 	}
 
 	assertDB(t, 1)
