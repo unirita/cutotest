@@ -1,0 +1,7 @@
+ジョブ名,実行ノード,ポート番号,実行ファイル,実行時引数,実行時環境変数,作業ディレクトリ,警告終了コード下限,警告終了出力パターン,異常終了コード下限,異常終了出力パターン,実行タイムアウト時間
+nrcmax,,,rc.bat,9,,,10,,20,,
+wrcmin,,,rc.bat,10,,,10,,20,,
+wrcmax,,,rc.bat,19,,,10,,20,,
+wstdout,,,longout.bat,,,,,warn,,,
+wstderr,,,longerr.bat,,,,,warn,,,
+mustexec,,,normal.bat,,,,,,,,
