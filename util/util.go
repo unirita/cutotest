@@ -96,10 +96,6 @@ func GetDBDirPath() string {
 	return filepath.Join(cutoroot, "data", "cuto.sqlite")
 }
 
-func IsWindows() bool {
-	return osname == "windows"
-}
-
 func FindJoblog(dirname string, nid int, jobname string) []string {
 	now := time.Now()
 	datestr := fmt.Sprintf("%04d%02d%02d", now.Year(), now.Month(), now.Day())
