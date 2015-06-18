@@ -13,6 +13,7 @@ type Master struct {
 	Command    string
 	ConfigPath string
 	Timeout    int
+	Stdout     string
 	Stderr     string
 	cmd        *exec.Cmd
 }
@@ -50,13 +51,16 @@ func (m *Master) Run(jobnet string) (int, error) {
 }
 
 func (m *Master) exec() (int, error) {
-	buf := new(bytes.Buffer)
-	m.cmd.Stderr = buf
+	outbuf := new(bytes.Buffer)
+	errbuf := new(bytes.Buffer)
+	m.cmd.Stdout = outbuf
+	m.cmd.Stderr = errbuf
 	if err := m.cmd.Start(); err != nil {
 		return -1, err
 	}
 	defer func() {
-		m.Stderr = buf.String()
+		m.Stdout = outbuf.String()
+		m.Stderr = errbuf.String()
 	}()
 
 	err := m.waitTimeout()
