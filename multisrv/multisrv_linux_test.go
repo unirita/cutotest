@@ -2,6 +2,7 @@ package multisrv
 
 import (
 	"fmt"
+	"os"
 	"path/filepath"
 	"testing"
 	"text/template"
@@ -38,12 +39,18 @@ func Test255Job(t *testing.T) {
 			t.Fatalf("Failed to start container[%s]", name)
 		}
 		defer cont.Terminate()
-		params.Containers[i] = cont.IPAddress()
+		params.Containers[i], err = cont.IPAddress()
+		if err != nil {
+			t.Fatalf("Failed to get container[%s] IPAddress", name)
+		}
 	}
 
 	if err := complement255JobFlow(params); err != nil {
 		t.Fatalf("Failed to complete BPMN flow file: %s", err)
 	}
+
+	m := util.NewMaster()
+	m.SetConfig("master.ini")
 
 	rc, err := m.SyntaxCheck("255Job")
 	if err != nil {
@@ -79,7 +86,7 @@ func complement255JobFlow(params *hostParams) error {
 	}
 	defer file.Close()
 
-	if err := tpl.Execute(file, param); err != nil {
+	if err := tpl.Execute(file, params); err != nil {
 		return err
 	}
 
