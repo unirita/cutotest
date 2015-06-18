@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<definitions>
+  <process>
+    <startEvent id="start"/>
+    <endEvent id="end"/>
+    <sequenceFlow sourceRef="start" targetRef="end"/>
+  </process>
+</definitions>

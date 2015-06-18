@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<definitions>
+  <process>
+    <startEvent id="start"/>
+    <endEvent id="end"/>
+    <serviceTask id="job" name="job1.bat"/>
+    <serviceTask id="job" name="job2.bat"/>
+    <sequenceFlow sourceRef="start" targetRef="job"/>
+    <sequenceFlow sourceRef="job" targetRef="end"/>
+  </process>
+</definitions>
