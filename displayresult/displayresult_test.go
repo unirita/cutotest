@@ -26,8 +26,9 @@ func createData() error {
 		return err
 	}
 	defer os.Chdir(cur)
+	fmt.Println(filepath.Join(util.GetCutoRoot(), "data"))
 
-	cmd := exec.Command("initdata.sh")
+	cmd := exec.Command("./initdata.sh")
 	if err := cmd.Start(); err != nil {
 		return err
 	}
