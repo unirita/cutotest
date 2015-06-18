@@ -6,6 +6,7 @@ import (
 	"io/ioutil"
 	"os"
 	"path/filepath"
+	"regexp"
 	"strings"
 )
 
@@ -109,6 +110,28 @@ func ContainsInFile(path string, substr string) bool {
 	s := bufio.NewScanner(file)
 	for s.Scan() {
 		if strings.Contains(s.Text(), substr) {
+			return true
+		}
+	}
+
+	return false
+}
+
+func IsPatternExistInFile(path sring, pattern string) bool {
+	file, err := os.Open(path)
+	if err != nil {
+		return false
+	}
+	defer file.Close()
+
+	r, err := regexp.Compile(pattern)
+	if err != nil {
+		return false
+	}
+
+	s := bufio.NewScanner(file)
+	for s.Scan() {
+		if r.MatchString(s.Text()) {
 			return true
 		}
 	}

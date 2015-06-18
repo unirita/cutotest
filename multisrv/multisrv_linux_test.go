@@ -117,6 +117,41 @@ func Test255Job(t *testing.T) {
 	if jobs[0].Name != "usevar" {
 		t.Errorf("Unexpected Job[%s] executed after branch.", jobs[0].JID)
 	}
+
+	// Check joblog.
+	joblogs := util.FindJoblog("joblog", 1, "usevar")
+	if len(joblogs) != 1 {
+		t.Fatalf("%s has no joblog or multi joblogs.", jobname)
+	}
+	joblog := joblogs[0]
+
+	if !util.IsPatternExistInFile(joblog, "^FLOWID=1") {
+		t.Errorf("Job[usevar] did not output correct FLOWID.")
+	}
+	if !util.IsPatternExistInFile(joblog, "^FLOWSD=.+") {
+		t.Errorf("Job[usevar] did not output correct FLOWSD.")
+	}
+	if !util.IsPatternExistInFile(joblog, "^SSROOT=.+") {
+		t.Errorf("Job[usevar] did not output correct SSROOT.")
+	}
+	if !util.IsPatternExistInFile(joblog, "^MEPATH=.+") {
+		t.Errorf("Job[usevar] did not output correct MEPATH.")
+	}
+	if !util.IsPatternExistInFile(joblog, "^SEPATH=.+") {
+		t.Errorf("Job[usevar] did not output correct SEPATH.")
+	}
+	if !util.IsPatternExistInFile(joblog, "^JOUT=cap0011out") {
+		t.Errorf("Job[usevar] did not output correct JOUT.")
+	}
+	if !util.IsPatternExistInFile(joblog, "^JRC=21") {
+		t.Errorf("Job[usevar] did not output correct JRC.")
+	}
+	if !util.IsPatternExistInFile(joblog, "^JSD=.+") {
+		t.Errorf("Job[usevar] did not output correct JSD.")
+	}
+	if !util.IsPatternExistInFile(joblog, "^JED=.+") {
+		t.Errorf("Job[usevar] did not output correct JED.")
+	}
 }
 
 func complement255JobDetail(params *hostParams) error {
