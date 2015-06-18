@@ -1,4 +1,4 @@
-package regression
+package flowcheck
 
 import (
 	"strings"
@@ -67,58 +67,78 @@ func TestFlowcheck(t *testing.T) {
 	// ここからmaster起動
 	m := util.NewMaster()
 	m.SetConfig("master.ini")
+	// 異常ケース
 	for _, test := range errorCases {
+		isOK := true
 		// シミュレーション実行
 		rc, err := m.SyntaxCheck(test.name)
 		if err != nil {
-			t.Fatalf("Master SyntaxCheck failed: %s", err)
+			t.Errorf("Master SyntaxCheck failed: %s", err)
+			isOK = false
 		}
 		if rc != 1 {
 			t.Logf("Master stdout: %s", m.Stdout)
 			t.Logf("Master stderr: %s", m.Stderr)
 			t.Errorf("Master RC[%d] is not 1.", rc)
+			isOK = false
 		}
 		if !strings.Contains(m.Stdout, test.msg) {
 			t.Errorf("Invalid stdout message. - %v", m.Stdout)
+			isOK = false
 		}
 		// 実行
 		rc, err = m.Run(test.name)
 		if err != nil {
 			t.Fatalf("Master run failed: %s", err)
+			isOK = false
 		}
 		if rc != 1 {
 			t.Logf("Master stdout: %s", m.Stdout)
 			t.Logf("Master stderr: %s", m.Stderr)
 			t.Errorf("Master RC[%d] is not 1.", rc)
+			isOK = false
 		}
 		if !strings.Contains(m.Stdout, test.msg) {
 			t.Errorf("Invalid stdout message. - %v", m.Stdout)
+			isOK = false
+		}
+		if isOK {
+			t.Logf("%v testcase OK.", test.name)
 		}
 	}
-
+	// 正常ケース
 	for _, test := range normalCases {
+		isOK := true
 		// シミュレーション実行
 		rc, err := m.SyntaxCheck(test.name)
 		if err != nil {
-			t.Fatalf("Master SyntaxCheck failed: %s", err)
+			t.Errorf("Master SyntaxCheck failed: %s", err)
+			isOK = false
 		}
 		if rc != 0 {
 			t.Logf("Master stdout: %s", m.Stdout)
 			t.Logf("Master stderr: %s", m.Stderr)
 			t.Errorf("Master RC[%d] is not 0.", rc)
+			isOK = false
 		}
 		if !strings.Contains(m.Stdout, test.msg) {
 			t.Errorf("Invalid stdout message. - %v", m.Stdout)
+			isOK = false
 		}
 		// 実行
 		rc, err = m.Run(test.name)
 		if err != nil {
-			t.Fatalf("Master run failed: %s", err)
+			t.Errorf("Master run failed: %s", err)
+			isOK = false
 		}
 		if rc != 0 {
 			t.Logf("Master stdout: %s", m.Stdout)
 			t.Logf("Master stderr: %s", m.Stderr)
 			t.Errorf("Master RC[%d] is not 0.", rc)
+			isOK = false
+		}
+		if isOK {
+			t.Logf("%v testcase OK.", test.name)
 		}
 	}
 	// ログファイルの確認
