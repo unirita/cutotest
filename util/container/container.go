@@ -2,6 +2,7 @@ package container
 
 import (
 	"os/exec"
+	"strings"
 )
 
 type Container struct {
@@ -35,7 +36,7 @@ func (c *Container) IPAddress() (string, error) {
 		return "", err
 	}
 
-	return string(out), nil
+	return strings.TrimSpace(string(out)), nil
 }
 
 func (c *Container) Terminate() {
