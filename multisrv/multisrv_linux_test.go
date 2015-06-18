@@ -45,8 +45,8 @@ func Test255Job(t *testing.T) {
 		}
 	}
 
-	if err := complement255JobFlow(params); err != nil {
-		t.Fatalf("Failed to complete BPMN flow file: %s", err)
+	if err := complement255JobDetail(params); err != nil {
+		t.Fatalf("Failed to complete job detail csv file: %s", err)
 	}
 
 	m := util.NewMaster()
@@ -73,8 +73,8 @@ func Test255Job(t *testing.T) {
 	}
 }
 
-func complement255JobFlow(params *hostParams) error {
-	path := filepath.Join(util.GetCutoRoot(), "bpmn", "255Job.bpmn")
+func complement255JobDetail(params *hostParams) error {
+	path := filepath.Join(util.GetCutoRoot(), "bpmn", "255Job.csv")
 	tpl, err := template.ParseFiles(path)
 	if err != nil {
 		return err
