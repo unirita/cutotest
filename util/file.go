@@ -117,7 +117,7 @@ func ContainsInFile(path string, substr string) bool {
 	return false
 }
 
-func IsPatternExistInFile(path sring, pattern string) bool {
+func IsPatternExistInFile(path string, pattern string) bool {
 	file, err := os.Open(path)
 	if err != nil {
 		return false

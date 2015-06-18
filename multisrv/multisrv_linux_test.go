@@ -121,7 +121,7 @@ func Test255Job(t *testing.T) {
 	// Check joblog.
 	joblogs := util.FindJoblog("joblog", 1, "usevar")
 	if len(joblogs) != 1 {
-		t.Fatalf("%s has no joblog or multi joblogs.", jobname)
+		t.Fatalf("usevar has no joblog or multi joblogs.")
 	}
 	joblog := joblogs[0]
 
