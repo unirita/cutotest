@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<definitions>
+  <process>
+    <startEvent id="start"/>
+    <endEvent id="end"/>
+    <serviceTask id="job1" name="job1.bat"/>
+    <serviceTask id="job2" name="job2.bat"/>
+    <serviceTask id="job3" name="job3.bat"/>
+    <serviceTask id="job3" name="job4.bat"/>
+    <parallelGateway id="gw1"/>
+    <sequenceFlow sourceRef="start" targetRef="job1"/>
+    <sequenceFlow sourceRef="job1" targetRef="gw1"/>
+    <sequenceFlow sourceRef="gw1" targetRef="job2"/>
+    <sequenceFlow sourceRef="gw1" targetRef="job3"/>
+    <sequenceFlow sourceRef="job2" targetRef="job4"/>
+    <sequenceFlow sourceRef="job3" targetRef="job4"/>
+    <sequenceFlow sourceRef="job4" targetRef="end"/>
+  </process>
+</definitions>
