@@ -9,6 +9,7 @@ import (
 
 	"github.com/unirita/cutotest/util"
 	"github.com/unirita/cutotest/util/container"
+	"github.com/unirita/cutotest/util/db"
 )
 
 type hostParams struct {
