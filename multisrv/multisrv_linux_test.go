@@ -1,0 +1,87 @@
+package multisrv
+
+import (
+	"fmt"
+	"path/filepath"
+	"testing"
+	"text/template"
+
+	"github.com/unirita/cutotest/util"
+	"github.com/unirita/cutotest/util/container"
+)
+
+type hostParams struct {
+	Containers [25]string
+}
+
+const imageName = "cuto/servant"
+
+func Test255Job(t *testing.T) {
+	util.InitCutoRoot()
+	util.DeployTestData("multisrv")
+	util.ComplementConfig("master.ini")
+	util.ComplementConfig("servant.ini")
+
+	s := util.NewServant()
+	s.SetConfig("servant.ini")
+	if err := s.Start(); err != nil {
+		t.Fatalf("Servant start failed: %s", err)
+	}
+	defer s.Kill()
+
+	params := new(hostParams)
+	for i := 0; i < 25; i++ {
+		name := fmt.Sprintf("TestContainer%d", i+1)
+		cont := container.New(imageName, name)
+		err := cont.Start()
+		if err != nil {
+			t.Fatalf("Failed to start container[%s]", name)
+		}
+		defer cont.Terminate()
+		params.Containers[i] = cont.IPAddress()
+	}
+
+	if err := complement255JobFlow(params); err != nil {
+		t.Fatalf("Failed to complete BPMN flow file: %s", err)
+	}
+
+	rc, err := m.SyntaxCheck("255Job")
+	if err != nil {
+		t.Fatalf("Master bpmn syntax check failed: %s", err)
+	}
+	if rc != 0 {
+		t.Errorf("Master RC[%d] is not 0.", rc)
+	}
+
+	rc, err = m.Run("255Job")
+	if err != nil {
+		t.Fatalf("Master run failed: %s", err)
+	}
+	if rc != 0 {
+		t.Errorf("Master RC[%d] is not 0.", rc)
+	}
+	logPath := util.GetLogPath("master.log")
+	if util.HasLogError(logPath) {
+		t.Errorf("There is error log in [%s]", logPath)
+	}
+}
+
+func complement255JobFlow(params *hostParams) error {
+	path := filepath.Join(util.GetCutoRoot(), "bpmn", "255Job.bpmn")
+	tpl, err := template.ParseFiles(path)
+	if err != nil {
+		return err
+	}
+
+	file, err := os.Create(path)
+	if err != nil {
+		return err
+	}
+	defer file.Close()
+
+	if err := tpl.Execute(file, param); err != nil {
+		return err
+	}
+
+	return nil
+}
