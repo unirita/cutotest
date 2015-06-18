@@ -71,6 +71,51 @@ func Test255Job(t *testing.T) {
 	if util.HasLogError(logPath) {
 		t.Errorf("There is error log in [%s]", logPath)
 	}
+
+	// Check database.
+	conn, err := db.Open(util.GetDBDirPath())
+	if err != nil {
+		t.Fatalf("DB file open failed: %v", err)
+	}
+	defer conn.Close()
+
+	network, err := conn.SelectJobNetwork(1)
+	if err != nil {
+		t.Fatalf("Can't read network record: %v", err)
+	}
+	if network.Name != "255Job" {
+		t.Errorf("Unexpected JOBNETWORK.JOBNETWORK[%s]", network.Name)
+	}
+	if network.Start == "" {
+		t.Error("JOBNETWORK.STARTDATE is empty.")
+	}
+	if network.End == "" {
+		t.Error("JOBNETWORK.STARTDATE is empty.")
+	}
+	if network.Status != 1 {
+		t.Errorf("Unexpected JOBNETWORK.STATUS[%d]", network.Status)
+	}
+
+	count, err := conn.CountJobs(1)
+	if err != nil {
+		t.Fatalf("Unexpected DB error occured: %v", err)
+	}
+	if count != 511 {
+		t.Errorf("Number of Job record[%d] is not expected value.", count)
+	}
+
+	subquery := "SELECT STARTDATE FROM JOB WHERE ID = 1 AND JOBNAME = 'usevar' LIMIT 1"
+	cond := fmt.Sprintf("ID = 1 AND ENDDATE > (%s)", subquery)
+	jobs, err := conn.SelectJobsByCond(cond)
+	if err != nil {
+		t.Fatalf("Unexpected DB error occured: %v", err)
+	}
+	if len(jobs) != 1 {
+		t.Fatal("Job which executed after branch must be only one.")
+	}
+	if jobs[0].Name != "usevar" {
+		t.Errorf("Unexpected Job[%s] executed after branch.", jobs[0].JID)
+	}
 }
 
 func complement255JobDetail(params *hostParams) error {
