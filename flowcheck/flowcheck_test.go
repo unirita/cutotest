@@ -52,6 +52,7 @@ func getNormalCases() []testCases {
 }
 
 func TestFlowcheck(t *testing.T) {
+	defer util.SaveEvidence("flowcheck")
 	util.InitCutoRoot()
 	util.DeployTestData("flowcheck")
 	util.ComplementConfig("master.ini")

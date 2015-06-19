@@ -8,6 +8,7 @@ import (
 )
 
 func TestSerialExecution(t *testing.T) {
+	defer util.SaveEvidence("serialexec")
 	util.InitCutoRoot()
 	util.DeployTestData("serialexec")
 	util.ComplementConfig("master.ini")

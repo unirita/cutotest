@@ -19,6 +19,7 @@ type hostParams struct {
 const imageName = "cuto/servant"
 
 func Test255Job(t *testing.T) {
+	defer util.SaveEvidence("multisrv")
 	util.InitCutoRoot()
 	util.DeployTestData("multisrv")
 	util.ComplementConfig("master.ini")

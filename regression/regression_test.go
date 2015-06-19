@@ -7,6 +7,7 @@ import (
 )
 
 func TestRegression(t *testing.T) {
+	defer util.SaveEvidence("regression")
 	util.InitCutoRoot()
 	util.DeployTestData("regression")
 	util.ComplementConfig("master.ini")
