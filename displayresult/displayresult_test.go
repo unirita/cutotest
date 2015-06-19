@@ -13,11 +13,10 @@ import (
 	"os/exec"
 	"path/filepath"
 
-	"cuto/db"
-	"cuto/show/gen"
-
 	"github.com/unirita/cutotest/util"
 )
+
+const abnormal = 9
 
 func createData() error {
 	cur, _ := os.Getwd()
@@ -76,7 +75,7 @@ func TestDisplayresult_Default(t *testing.T) {
 		t.Logf("Show stderr: %s", show.Stderr)
 		t.Errorf("Show RC[%d] is not 0.", rc)
 	}
-	jsData := new(gen.OutputRoot)
+	jsData := new(OutputRoot)
 	err = json.Unmarshal([]byte(show.Stdout), jsData)
 	if err != nil {
 		t.Errorf("Json Parse failed. : %v", err)
@@ -84,7 +83,7 @@ func TestDisplayresult_Default(t *testing.T) {
 	if len(jsData.Jobnetworks) == 0 {
 		t.Error("Getted data count 0.")
 	}
-	var chkJn *gen.OutputJobNet
+	var chkJn *OutputJobNet
 	now := time.Now()
 	today := fmt.Sprintf("%s-%02d-%s", now.Year(), now.Month(), now.Day())
 	for _, jobnet := range jsData.Jobnetworks {
@@ -122,7 +121,7 @@ func TestDisplayresult_JobnetSetting(t *testing.T) {
 		t.Logf("Show stderr: %s", show.Stderr)
 		t.Errorf("Show RC[%d] is not 0.", rc)
 	}
-	jsData := new(gen.OutputRoot)
+	jsData := new(OutputRoot)
 	err = json.Unmarshal([]byte(show.Stdout), jsData)
 	if err != nil {
 		t.Errorf("Json Parse failed. : %v", err)
@@ -158,7 +157,7 @@ func TestDisplayresult_PeriodSetting(t *testing.T) {
 		t.Logf("Show stderr: %s", show.Stderr)
 		t.Errorf("Show RC[%d] is not 0.", rc)
 	}
-	jsData := new(gen.OutputRoot)
+	jsData := new(OutputRoot)
 	err = json.Unmarshal([]byte(show.Stdout), jsData)
 	if err != nil {
 		t.Errorf("Json Parse failed. : %v", err)
@@ -187,7 +186,7 @@ func TestDisplayresult_PeriodSetting(t *testing.T) {
 		t.Logf("Show stderr: %s", show.Stderr)
 		t.Errorf("Show RC[%d] is not 0.", rc)
 	}
-	jsData = new(gen.OutputRoot)
+	jsData = new(OutputRoot)
 	err = json.Unmarshal([]byte(show.Stdout), jsData)
 	if err != nil {
 		t.Errorf("Json Parse failed. : %v", err)
@@ -216,7 +215,7 @@ func TestDisplayresult_StatusSetting(t *testing.T) {
 		t.Logf("Show stderr: %s", show.Stderr)
 		t.Errorf("Show RC[%d] is not 0.", rc)
 	}
-	jsData := new(gen.OutputRoot)
+	jsData := new(OutputRoot)
 	err = json.Unmarshal([]byte(show.Stdout), jsData)
 	if err != nil {
 		t.Errorf("Json Parse failed. : %v", err)
@@ -246,7 +245,7 @@ func TestDisplayresult_StatusSetting(t *testing.T) {
 		t.Logf("Show stderr: %s", show.Stderr)
 		t.Errorf("Show RC[%d] is not 0.", rc)
 	}
-	jsData = new(gen.OutputRoot)
+	jsData = new(OutputRoot)
 	err = json.Unmarshal([]byte(show.Stdout), jsData)
 	if err != nil {
 		t.Errorf("Json Parse failed. : %v", err)
@@ -276,7 +275,7 @@ func TestDisplayresult_StatusSetting(t *testing.T) {
 		t.Logf("Show stderr: %s", show.Stderr)
 		t.Errorf("Show RC[%d] is not 0.", rc)
 	}
-	jsData = new(gen.OutputRoot)
+	jsData = new(OutputRoot)
 	err = json.Unmarshal([]byte(show.Stdout), jsData)
 	if err != nil {
 		t.Errorf("Json Parse failed. : %v", err)
@@ -308,7 +307,7 @@ func TestDisplayresult_FormatSetting(t *testing.T) {
 		t.Logf("Show stderr: %s", show.Stderr)
 		t.Errorf("Show RC[%d] is not 0.", rc)
 	}
-	jsData := new(gen.OutputRoot)
+	jsData := new(OutputRoot)
 	err = json.Unmarshal([]byte(show.Stdout), jsData)
 	if err != nil {
 		t.Errorf("Json Parse failed. : %v", err)
@@ -340,7 +339,7 @@ func TestDisplayresult_FormatSetting(t *testing.T) {
 		t.Logf("Show stderr: %s", show.Stderr)
 		t.Errorf("Show RC[%d] is not 0.", rc)
 	}
-	jsData = new(gen.OutputRoot)
+	jsData = new(OutputRoot)
 	err = json.Unmarshal([]byte(show.Stdout), jsData)
 	if err == nil {
 		t.Errorf("Get output format must be json, but successed json parse.")
@@ -376,7 +375,7 @@ func TestDisplayresult_MultiSetting(t *testing.T) {
 		t.Logf("Show stderr: %s", show.Stderr)
 		t.Errorf("Show RC[%d] is not 0.", rc)
 	}
-	jsData := new(gen.OutputRoot)
+	jsData := new(OutputRoot)
 	err = json.Unmarshal([]byte(show.Stdout), jsData)
 	if err != nil {
 		t.Errorf("Json Parse failed. : %v", err)
@@ -385,7 +384,7 @@ func TestDisplayresult_MultiSetting(t *testing.T) {
 		t.Errorf("3 jobnet records must be even, but getted %v records", len(jsData.Jobnetworks))
 	}
 	for _, jobnet := range jsData.Jobnetworks {
-		if jobnet.Status != db.ABNORMAL {
+		if jobnet.Status != abnormal {
 			t.Error("Exist invalid status of jobnet records.")
 		}
 	}
