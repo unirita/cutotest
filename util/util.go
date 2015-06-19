@@ -127,3 +127,19 @@ func FindJoblog(dirname string, nid int, jobname string) []string {
 
 	return joblogs
 }
+
+func SaveEvidence(testname string) {
+	dataFrom := filepath.Join(cutoroot, "data")
+	dataTo := filepath.Join(os.Getenv("GOPATH"), "evidence", testname, "data")
+	joblogFrom := filepath.Join(cutoroot, "joblog")
+	joblogTo := filepath.Join(os.Getenv("GOPATH"), "evidence", testname, "joblog")
+	logFrom := filepath.Join(cutoroot, "log")
+	logTo := filepath.Join(os.Getenv("GOPATH"), "evidence", testname, "log")
+
+	ClearDir(dataTo)
+	ClearDir(joblogTo)
+	ClearDir(logTo)
+	CopyDir(dataFrom, dataTo)
+	CopyDir(joblogFrom, joblogTo)
+	CopyDir(logFrom, logTo)
+}

@@ -48,7 +48,7 @@ func createData() error {
 	return errors.New("createData() Unknown error.")
 }
 
-func init() {
+func TestMain(m *testing.M) {
 	util.InitCutoRoot()
 	util.DeployTestData("displayresult")
 	util.ComplementConfig("master.ini")
@@ -57,6 +57,13 @@ func init() {
 	if err := createData(); err != nil {
 		panic(err)
 	}
+
+	rc := m.Run()
+
+	// Cannot use defer because of os.Exit.
+	util.SaveEvidence("displayresult")
+
+	os.Exit(rc)
 }
 
 // No.1 - No.3まで

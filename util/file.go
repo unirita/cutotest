@@ -12,7 +12,7 @@ import (
 
 func ClearDir(path string) {
 	os.RemoveAll(path)
-	os.Mkdir(path, 0755)
+	os.MkdirAll(path, 0755)
 }
 
 func CopyFile(srcPath string, targetPath string) error {
