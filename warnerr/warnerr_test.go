@@ -9,7 +9,7 @@ import (
 )
 
 func TestWarnings(t *testing.T) {
-	defer util.SaveEvidence("warnerr")
+	defer util.SaveEvidence("warnerr_warn")
 	util.InitCutoRoot()
 	util.DeployTestData("warnerr")
 	util.ComplementConfig("master.ini")
@@ -62,6 +62,7 @@ func TestWarnings(t *testing.T) {
 }
 
 func TestErrors(t *testing.T) {
+	defer util.SaveEvidence("warnerr_err")
 	util.InitCutoRoot()
 	util.DeployTestData("warnerr")
 	util.ComplementConfig("master.ini")
