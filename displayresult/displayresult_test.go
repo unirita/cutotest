@@ -92,7 +92,7 @@ func TestDisplayresult_Default(t *testing.T) {
 	}
 	var chkJn *OutputJobNet
 	now := time.Now()
-	today := fmt.Sprintf("%s-%02d-%s", now.Year(), now.Month(), now.Day())
+	today := fmt.Sprintf("%04d-%02d-%02d", now.Year(), now.Month(), now.Day())
 	for _, jobnet := range jsData.Jobnetworks {
 		if strings.HasPrefix(jobnet.StartDate, today) {
 			t.Errorf("Gett Jobnet record's only StartDate item '%v', but getted '%v' record exist.", today, jobnet.StartDate)
@@ -147,9 +147,9 @@ func TestDisplayresult_JobnetSetting(t *testing.T) {
 func TestDisplayresult_PeriodSetting(t *testing.T) {
 	// No.6
 	now := time.Now()
-	to := fmt.Sprintf("%v%02d%v", now.Year(), now.Month(), now.Day())
+	to := fmt.Sprintf("%04d%02d%02d", now.Year(), now.Month(), now.Day())
 	day4ago := now.AddDate(0, 0, -4)
-	from := fmt.Sprintf("%v%02d%v", day4ago.Year(), day4ago.Month(), day4ago.Day())
+	from := fmt.Sprintf("%04d%02d%02d", day4ago.Year(), day4ago.Month(), day4ago.Day())
 
 	show := util.NewShow()
 	show.SetConfig("master.ini")
@@ -176,9 +176,9 @@ func TestDisplayresult_PeriodSetting(t *testing.T) {
 
 	// No.7
 	yesterday := now.AddDate(0, 0, -1)
-	to = fmt.Sprintf("%v%02d%v", yesterday.Year(), yesterday.Month(), yesterday.Day())
+	to = fmt.Sprintf("%04d%02d%02d", yesterday.Year(), yesterday.Month(), yesterday.Day())
 	day3ago := now.AddDate(0, 0, -3)
-	from = fmt.Sprintf("%v%02d%v", day3ago.Year(), day3ago.Month(), day3ago.Day())
+	from = fmt.Sprintf("%04d%02d%02d", day3ago.Year(), day3ago.Month(), day3ago.Day())
 
 	show = util.NewShow()
 	show.SetConfig("master.ini")
@@ -323,7 +323,7 @@ func TestDisplayresult_FormatSetting(t *testing.T) {
 		t.Errorf("4 jobnet records must be even, but getted %v records", len(jsData.Jobnetworks))
 	}
 	now := time.Now()
-	today := fmt.Sprintf("%s-%02d-%s", now.Year(), now.Month(), now.Day())
+	today := fmt.Sprintf("%04d-%02d-%02d", now.Year(), now.Month(), now.Day())
 	for _, jobnet := range jsData.Jobnetworks {
 		if strings.HasPrefix(jobnet.StartDate, today) {
 			t.Errorf("Gett Jobnet record's only StartDate item '%v', but getted '%v' record exist.", today, jobnet.StartDate)
@@ -364,9 +364,9 @@ func TestDisplayresult_MultiSetting(t *testing.T) {
 
 	now := time.Now()
 	yesterday := now.AddDate(0, 0, -1)
-	to := fmt.Sprintf("%v%02d%v", yesterday.Year(), yesterday.Month(), yesterday.Day())
+	to := fmt.Sprintf("%04d%02d%02d", yesterday.Year(), yesterday.Month(), yesterday.Day())
 	day3ago := now.AddDate(0, 0, -3)
-	from := fmt.Sprintf("%v%02d%v", day3ago.Year(), day3ago.Month(), day3ago.Day())
+	from := fmt.Sprintf("%04d%02d%02d", day3ago.Year(), day3ago.Month(), day3ago.Day())
 
 	show := util.NewShow()
 	show.SetConfig("master.ini")
