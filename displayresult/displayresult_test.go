@@ -94,8 +94,8 @@ func TestDisplayresult_Default(t *testing.T) {
 	now := time.Now()
 	today := fmt.Sprintf("%04d-%02d-%02d", now.Year(), now.Month(), now.Day())
 	for _, jobnet := range jsData.Jobnetworks {
-		if strings.HasPrefix(jobnet.StartDate, today) {
-			t.Errorf("Gett Jobnet record's only StartDate item '%v', but getted '%v' record exist.", today, jobnet.StartDate)
+		if !strings.HasPrefix(jobnet.StartDate, today) {
+			t.Errorf("Get Jobnet record's only StartDate item '%v', but getted '%v' record exist.", today, jobnet.StartDate)
 		}
 		if jobnet.Jobnetwork == verifyJn {
 			chkJn = jobnet
@@ -106,7 +106,7 @@ func TestDisplayresult_Default(t *testing.T) {
 	}
 	for _, job := range chkJn.Jobs {
 		if job.Jobname != "job1" && job.Jobname != "job2" {
-			t.Errorf("Getted invalid job record. : jobname(%v)", job.Jobname)
+			t.Errorf("Got invalid job record. : jobname(%v)", job.Jobname)
 		}
 	}
 	t.Log("No.1 - No.3 PASS.")
@@ -325,8 +325,8 @@ func TestDisplayresult_FormatSetting(t *testing.T) {
 	now := time.Now()
 	today := fmt.Sprintf("%04d-%02d-%02d", now.Year(), now.Month(), now.Day())
 	for _, jobnet := range jsData.Jobnetworks {
-		if strings.HasPrefix(jobnet.StartDate, today) {
-			t.Errorf("Gett Jobnet record's only StartDate item '%v', but getted '%v' record exist.", today, jobnet.StartDate)
+		if !strings.HasPrefix(jobnet.StartDate, today) {
+			t.Errorf("Get Jobnet record's only StartDate item '%v', but getted '%v' record exist.", today, jobnet.StartDate)
 		}
 	}
 	t.Log("No.11 PASS.")
