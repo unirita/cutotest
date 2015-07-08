@@ -69,9 +69,14 @@ func Test255Job(t *testing.T) {
 	if rc != 0 {
 		t.Errorf("Master RC[%d] is not 0.", rc)
 	}
+
+	// Check master log.
 	logPath := util.GetLogPath("master.log")
 	if util.HasLogError(logPath) {
 		t.Errorf("There is error log in [%s]", logPath)
+	}
+	if !util.IsPatternExistInFile(logPath, params.Containers[0]) {
+		t.Errorf("Node name was not recorded in [%s]", logPath)
 	}
 
 	// Check database.
