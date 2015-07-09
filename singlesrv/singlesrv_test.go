@@ -9,7 +9,7 @@ import (
 )
 
 func Test255Job(t *testing.T) {
-	defer util.SaveEvidence("singlesrv_255job")
+	defer util.SaveEvidence("singlesrv", "255job")
 	util.InitCutoRoot()
 	util.DeployTestData("singlesrv")
 	util.ComplementConfig("master.ini")
@@ -92,7 +92,7 @@ func Test255Job(t *testing.T) {
 }
 
 func Test100Network(t *testing.T) {
-	defer util.SaveEvidence("singlesrv_100network")
+	defer util.SaveEvidence("singlesrv", "100network")
 	util.InitCutoRoot()
 	util.DeployTestData("singlesrv")
 	util.ComplementConfig("master.ini")
