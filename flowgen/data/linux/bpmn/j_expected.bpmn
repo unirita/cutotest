@@ -3,7 +3,7 @@
     <process>
         <startEvent id=":start"></startEvent>
         <endEvent id=":end"></endEvent>
-        <serviceTask id="job1" name="job1.bat"></serviceTask>
+        <serviceTask id="job1" name="job1.sh"></serviceTask>
         <sequenceFlow sourceRef=":start" targetRef="job1"></sequenceFlow>
         <sequenceFlow sourceRef="job1" targetRef=":end"></sequenceFlow>
     </process>

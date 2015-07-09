@@ -1,6 +1,6 @@
-job1.bat ->
+job1.sh ->
 [
-  job2.bat,
-  job3.bat
+  job2.sh,
+  job3.sh
 ]
--> job4.bat
+-> job4.sh
