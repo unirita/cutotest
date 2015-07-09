@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions>
+    <process>
+        <startEvent id=":start"></startEvent>
+        <endEvent id=":end"></endEvent>
+        <serviceTask id="job1" name="job1.bat"></serviceTask>
+        <serviceTask id="job2" name="job2.bat"></serviceTask>
+        <serviceTask id="job3" name="job3.bat"></serviceTask>
+        <serviceTask id="job4" name="job4.bat"></serviceTask>
+        <serviceTask id="job5" name="job5.bat"></serviceTask>
+        <serviceTask id="job6" name="job6.bat"></serviceTask>
+        <parallelGateway id="gw1_open"></parallelGateway>
+        <parallelGateway id="gw1_close"></parallelGateway>
+        <parallelGateway id="gw2_open"></parallelGateway>
+        <parallelGateway id="gw2_close"></parallelGateway>
+        <sequenceFlow sourceRef=":start" targetRef="gw1_open"></sequenceFlow>
+        <sequenceFlow sourceRef="gw1_open" targetRef="job1"></sequenceFlow>
+        <sequenceFlow sourceRef="job1" targetRef="gw1_close"></sequenceFlow>
+        <sequenceFlow sourceRef="gw1_open" targetRef="job2"></sequenceFlow>
+        <sequenceFlow sourceRef="job2" targetRef="job3"></sequenceFlow>
+        <sequenceFlow sourceRef="job3" targetRef="gw1_close"></sequenceFlow>
+        <sequenceFlow sourceRef="gw1_close" targetRef="gw2_open"></sequenceFlow>
+        <sequenceFlow sourceRef="gw2_open" targetRef="job4"></sequenceFlow>
+        <sequenceFlow sourceRef="job4" targetRef="job5"></sequenceFlow>
+        <sequenceFlow sourceRef="job5" targetRef="gw2_close"></sequenceFlow>
+        <sequenceFlow sourceRef="gw2_open" targetRef="job6"></sequenceFlow>
+        <sequenceFlow sourceRef="job6" targetRef="gw2_close"></sequenceFlow>
+        <sequenceFlow sourceRef="gw2_close" targetRef=":end"></sequenceFlow>
+    </process>
+</definitions>
