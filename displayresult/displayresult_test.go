@@ -72,7 +72,7 @@ func TestDisplayresult_Default(t *testing.T) {
 	verifyJobs := []string{"job1", "job2"}
 
 	show := util.NewShow()
-	show.SetConfig("master.ini")
+	show.UseConfig("master.ini")
 	rc, err := show.Run()
 	if err != nil {
 		t.Errorf("Show Run failed : %v", err)
@@ -117,7 +117,7 @@ func TestDisplayresult_JobnetSetting(t *testing.T) {
 	verifyJn := "Running"
 
 	show := util.NewShow()
-	show.SetConfig("master.ini")
+	show.UseConfig("master.ini")
 	show.AddJobnet(verifyJn)
 	rc, err := show.Run()
 	if err != nil {
@@ -152,7 +152,7 @@ func TestDisplayresult_PeriodSetting(t *testing.T) {
 	from := fmt.Sprintf("%04d%02d%02d", day4ago.Year(), day4ago.Month(), day4ago.Day())
 
 	show := util.NewShow()
-	show.SetConfig("master.ini")
+	show.UseConfig("master.ini")
 	show.AddFrom(from)
 	show.AddTo(to)
 	rc, err := show.Run()
@@ -181,7 +181,7 @@ func TestDisplayresult_PeriodSetting(t *testing.T) {
 	from = fmt.Sprintf("%04d%02d%02d", day3ago.Year(), day3ago.Month(), day3ago.Day())
 
 	show = util.NewShow()
-	show.SetConfig("master.ini")
+	show.UseConfig("master.ini")
 	show.AddFrom(from)
 	show.AddTo(to)
 	rc, err = show.Run()
@@ -211,7 +211,7 @@ func TestDisplayresult_StatusSetting(t *testing.T) {
 	verifyJn := "Normal"
 
 	show := util.NewShow()
-	show.SetConfig("master.ini")
+	show.UseConfig("master.ini")
 	show.AddStatus(status)
 	rc, err := show.Run()
 	if err != nil {
@@ -241,7 +241,7 @@ func TestDisplayresult_StatusSetting(t *testing.T) {
 	verifyJn = "Running"
 
 	show = util.NewShow()
-	show.SetConfig("master.ini")
+	show.UseConfig("master.ini")
 	show.AddStatus(status)
 	rc, err = show.Run()
 	if err != nil {
@@ -271,7 +271,7 @@ func TestDisplayresult_StatusSetting(t *testing.T) {
 	verifyJn = "Abnormal"
 
 	show = util.NewShow()
-	show.SetConfig("master.ini")
+	show.UseConfig("master.ini")
 	show.AddStatus(status)
 	rc, err = show.Run()
 	if err != nil {
@@ -303,7 +303,7 @@ func TestDisplayresult_FormatSetting(t *testing.T) {
 	format := "json"
 
 	show := util.NewShow()
-	show.SetConfig("master.ini")
+	show.UseConfig("master.ini")
 	show.AddFormat(format)
 	rc, err := show.Run()
 	if err != nil {
@@ -335,7 +335,7 @@ func TestDisplayresult_FormatSetting(t *testing.T) {
 	format = "csv"
 
 	show = util.NewShow()
-	show.SetConfig("master.ini")
+	show.UseConfig("master.ini")
 	show.AddFormat(format)
 	rc, err = show.Run()
 	if err != nil {
@@ -369,7 +369,7 @@ func TestDisplayresult_MultiSetting(t *testing.T) {
 	from := fmt.Sprintf("%04d%02d%02d", day3ago.Year(), day3ago.Month(), day3ago.Day())
 
 	show := util.NewShow()
-	show.SetConfig("master.ini")
+	show.UseConfig("master.ini")
 	show.AddStatus(status)
 	show.AddFrom(from)
 	show.AddTo(to)
@@ -434,7 +434,7 @@ func TestDisplayresult_Help(t *testing.T) {
 func TestDisplayresult_ErrorCase(t *testing.T) {
 	// No.16 invalid config
 	show := util.NewShow()
-	show.SetConfig("xxx")
+	show.UseConfig("xxx")
 	rc, err := show.Run()
 	if err != nil {
 		t.Errorf("Show Run failed : %v", err)
@@ -448,7 +448,7 @@ func TestDisplayresult_ErrorCase(t *testing.T) {
 
 	// No.17 0 record
 	show = util.NewShow()
-	show.SetConfig("master.ini")
+	show.UseConfig("master.ini")
 	show.AddTo("20100101")
 	rc, err = show.Run()
 	if err != nil {
@@ -463,7 +463,7 @@ func TestDisplayresult_ErrorCase(t *testing.T) {
 
 	// No.18 Invalid DB
 	show = util.NewShow()
-	show.SetConfig("error.ini")
+	show.UseConfig("error.ini")
 	rc, err = show.Run()
 	if err != nil {
 		t.Errorf("Show Run failed : %v", err)

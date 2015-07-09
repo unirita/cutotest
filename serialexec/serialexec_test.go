@@ -15,14 +15,14 @@ func TestSerialExecution(t *testing.T) {
 	util.ComplementConfig("servant.ini")
 
 	s := util.NewServant()
-	s.SetConfig("servant.ini")
+	s.UseConfig("servant.ini")
 	if err := s.Start(); err != nil {
 		t.Fatalf("Servant start failed: %s", err)
 	}
 	defer s.Kill()
 
 	m := util.NewMaster()
-	m.SetConfig("master.ini")
+	m.UseConfig("master.ini")
 
 	rc, err := m.SyntaxCheck("Serial")
 	if err != nil {

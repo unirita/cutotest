@@ -16,14 +16,14 @@ func Test255Job(t *testing.T) {
 	util.ComplementConfig("servant.ini")
 
 	s := util.NewServant()
-	s.SetConfig("servant.ini")
+	s.UseConfig("servant.ini")
 	if err := s.Start(); err != nil {
 		t.Fatalf("Servant start failed: %s", err)
 	}
 	defer s.Kill()
 
 	m := util.NewMaster()
-	m.SetConfig("master.ini")
+	m.UseConfig("master.ini")
 
 	rc, err := m.SyntaxCheck("255JobSingle")
 	if err != nil {
@@ -99,7 +99,7 @@ func Test100Network(t *testing.T) {
 	util.ComplementConfig("servant.ini")
 
 	s := util.NewServant()
-	s.SetConfig("servant.ini")
+	s.UseConfig("servant.ini")
 	if err := s.Start(); err != nil {
 		t.Fatalf("Servant start failed: %s", err)
 	}
@@ -136,7 +136,7 @@ func Test100Network(t *testing.T) {
 
 func executeOneNetwork(t *testing.T, chRC chan<- int) {
 	m := util.NewMaster()
-	m.SetConfig("master.ini")
+	m.UseConfig("master.ini")
 	rc, err := m.Run("15seconds")
 	if err != nil {
 		t.Logf("Master run failed: %s", err)

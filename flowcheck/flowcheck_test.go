@@ -59,7 +59,7 @@ func TestFlowcheck(t *testing.T) {
 	util.ComplementConfig("servant.ini")
 
 	s := util.NewServant()
-	s.SetConfig("servant.ini")
+	s.UseConfig("servant.ini")
 	if err := s.Start(); err != nil {
 		t.Fatalf("Servant start failed: %s", err)
 	}
@@ -67,7 +67,7 @@ func TestFlowcheck(t *testing.T) {
 
 	// ここからmaster起動
 	m := util.NewMaster()
-	m.SetConfig("master.ini")
+	m.UseConfig("master.ini")
 	// 異常ケース
 	for _, test := range errorCases {
 		isOK := true

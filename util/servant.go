@@ -1,41 +1,29 @@
 package util
 
 import (
-	//"os"
-	"os/exec"
 	"path/filepath"
 )
 
 type Servant struct {
-	Command    string
-	ConfigPath string
+	command
 
-	cmd *exec.Cmd
+	config string
 }
 
 func NewServant() *Servant {
 	s := new(Servant)
-	if osname == "windows" {
-		s.Command = filepath.Join(cutoroot, "bin", "servant.exe")
-	} else {
-		s.Command = filepath.Join(cutoroot, "bin", "servant")
-	}
+	s.GeneratePath("servant")
 	return s
 }
 
-func (s *Servant) SetConfig(filename string) {
-	s.ConfigPath = filepath.Join(cutoroot, "bin", filename)
+func (s *Servant) UseConfig(filename string) {
+	s.config = filepath.Join(cutoroot, "bin", filename)
 }
 
 func (s *Servant) Start() error {
-	if len(s.ConfigPath) == 0 {
-		s.cmd = exec.Command(s.Command)
+	if len(s.config) == 0 {
+		return s.AsyncExec()
 	} else {
-		s.cmd = exec.Command(s.Command, "-c", s.ConfigPath)
+		return s.AsyncExec("-c", s.config)
 	}
-	return s.cmd.Start()
-}
-
-func (s *Servant) Kill() {
-	s.cmd.Process.Kill()
 }
