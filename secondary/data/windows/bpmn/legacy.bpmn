@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions>
+    <process>
+        <startEvent id=":start"></startEvent>
+        <endEvent id=":end"></endEvent>
+        <serviceTask id="job1" name="testjob"></serviceTask>
+        <sequenceFlow sourceRef=":start" targetRef="job1"></sequenceFlow>
+        <sequenceFlow sourceRef="job1" targetRef=":end"></sequenceFlow>
+    </process>
+</definitions>
