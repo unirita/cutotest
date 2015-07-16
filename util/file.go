@@ -117,6 +117,24 @@ func ContainsInFile(path string, substr string) bool {
 	return false
 }
 
+func CountInFile(path string, substr string) int {
+	file, err := os.Open(path)
+	if err != nil {
+		return 0
+	}
+	defer file.Close()
+
+	count := 0
+	s := bufio.NewScanner(file)
+	for s.Scan() {
+		if strings.Contains(s.Text(), substr) {
+			count++
+		}
+	}
+
+	return count
+}
+
 func IsPatternExistInFile(path string, pattern string) bool {
 	file, err := os.Open(path)
 	if err != nil {
