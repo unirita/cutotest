@@ -2,20 +2,11 @@ package realtime
 
 import (
 	"net/http/httptest"
-	"os"
 	"path/filepath"
 	"testing"
 
 	"github.com/unirita/cutotest/util"
 )
-
-func waitProcessByPID(pid int) {
-	proc, err := os.FindProcess(pid)
-	if err != nil {
-		return
-	}
-	proc.Wait()
-}
 
 func TestJSONOnly_Serial(t *testing.T) {
 	defer util.SaveEvidence("realtime", "json_only", "serial")
