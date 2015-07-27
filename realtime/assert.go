@@ -43,6 +43,22 @@ func assertNotRemainNetworkFile(t *testing.T) {
 	}
 }
 
+func assertIsNotNetworkEnds(t *testing.T) {
+	conn, err := db.Open(util.GetDBDirPath())
+	if err != nil {
+		t.Fatalf("DB file open failed: %v", err)
+	}
+	defer conn.Close()
+
+	nwks, err := conn.SelectJobNetworksByCond("ID=1 AND STATUS<>0")
+	if err != nil {
+		t.Fatalf("Unexpected DB error occured: %s", err)
+	}
+	if len(nwks) != 0 {
+		t.Errorf("Network must not ends, but it does.")
+	}
+}
+
 func assertIsJob1to3Successed(t *testing.T) {
 	conn, err := db.Open(util.GetDBDirPath())
 	if err != nil {
@@ -55,7 +71,6 @@ func assertIsJob1to3Successed(t *testing.T) {
 		t.Fatalf("Unexpected DB error occured: %s", err)
 	}
 	if len(jobs1) != 1 {
-		t.Log(len(jobs1))
 		t.Errorf("job1 must end successfully once, but dose not.")
 	}
 
@@ -64,7 +79,6 @@ func assertIsJob1to3Successed(t *testing.T) {
 		t.Fatalf("Unexpected DB error occured: %s", err)
 	}
 	if len(jobs2) != 1 {
-		t.Log(len(jobs2))
 		t.Errorf("job2 must end successfully once, but dose not.")
 	}
 
@@ -73,7 +87,6 @@ func assertIsJob1to3Successed(t *testing.T) {
 		t.Fatalf("Unexpected DB error occured: %s", err)
 	}
 	if len(jobs3) != 1 {
-		t.Log(len(jobs3))
 		t.Errorf("job3 must end successfully once, but dose not.")
 	}
 }

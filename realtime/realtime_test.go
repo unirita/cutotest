@@ -11,9 +11,10 @@ import (
 
 func waitProcessByPID(pid int) {
 	proc, err := os.FindProcess(pid)
-	if err == nil {
-		proc.Wait()
+	if err != nil {
+		return
 	}
+	proc.Wait()
 }
 
 func TestJSONOnly_Serial(t *testing.T) {
@@ -47,6 +48,7 @@ func TestJSONOnly_Serial(t *testing.T) {
 	res := parseRealtimeResult(t, r.Stdout)
 	assertSuccessRealtimeOutput(t, res)
 	assertNotRemainNetworkFile(t)
+	assertIsNotNetworkEnds(t)
 
 	waitProcessByPID(res.PID)
 	assertIsJob1to3Successed(t)
