@@ -9,7 +9,7 @@ import (
 	"github.com/unirita/cutotest/util"
 )
 
-func waitProcess(pid int) {
+func waitProcessByPID(pid int) {
 	proc, err := os.FindProcess(pid)
 	if err == nil {
 		proc.Wait()
@@ -48,6 +48,6 @@ func TestJSONOnly_Serial(t *testing.T) {
 	assertSuccessRealtimeOutput(t, res)
 	assertNotRemainNetworkFile(t)
 
-	waitProcess(res.PID)
+	waitProcessByPID(res.PID)
 	assertIsJob1to3Successed(t)
 }
