@@ -90,3 +90,26 @@ func assertIsJob1to3Successed(t *testing.T) {
 		t.Errorf("job3 must end successfully once, but dose not.")
 	}
 }
+
+func assertTestjobSuccessed(t *testing.T) {
+	conn, err := db.Open(util.GetDBDirPath())
+	if err != nil {
+		t.Fatalf("DB file open failed: %v", err)
+	}
+	defer conn.Close()
+
+	testjobs, err := conn.SelectJobsByCond("JOBNAME='testjob' AND STATUS=1")
+	if err != nil {
+		t.Fatalf("Unexpected DB error occured: %s", err)
+	}
+	if len(testjobs) != 1 {
+		t.Errorf("testjob must end successfully once, but dose not.")
+	}
+}
+
+func assertJoblogExists(t *testing.T, name string) {
+	joblogs := util.FindJoblog("joblog", 1, name)
+	if len(joblogs) == 0 {
+		t.Errorf("There is no joblog for %s.", name)
+	}
+}

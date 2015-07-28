@@ -26,3 +26,12 @@ func outputParallelFlow() http.Handler {
 	}
 	return http.HandlerFunc(f)
 }
+
+func outputWithJobDetail() http.Handler {
+	f := func(w http.ResponseWriter, r *http.Request) {
+		job1 := makeBatchFileName("job1")
+		fmt.Fprintf(w, `{"flow":"testjob","jobs":[{"name":"testjob","path":"%s"}]}`, job1)
+
+	}
+	return http.HandlerFunc(f)
+}
