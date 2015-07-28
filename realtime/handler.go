@@ -35,3 +35,11 @@ func outputWithJobDetail(name string) http.Handler {
 	}
 	return http.HandlerFunc(f)
 }
+
+func outputTestJobOnly() http.Handler {
+	f := func(w http.ResponseWriter, r *http.Request) {
+		fmt.Fprintf(w, `{"flow":"testjob"}`)
+
+	}
+	return http.HandlerFunc(f)
+}

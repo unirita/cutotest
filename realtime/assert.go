@@ -1,6 +1,7 @@
 package realtime
 
 import (
+	"fmt"
 	"io/ioutil"
 	"path/filepath"
 	"regexp"
@@ -24,6 +25,25 @@ func assertSuccessRealtimeOutput(t *testing.T, res *result) {
 		t.Errorf("output instance ID must not be %d, but it is", 0)
 	}
 	if !regexp.MustCompile(`realtime_\d{14}`).MatchString(res.Network.Name) {
+		t.Errorf("output network name does not match valid pattern.")
+	}
+}
+
+func assertSuccessNamedRealtimeOutput(t *testing.T, res *result, name string) {
+	if res.Status != 0 {
+		t.Errorf("output status => %d, want %d", res.Status, 0)
+	}
+	if res.Message != "Success." {
+		t.Errorf("output message => %s, want %s", res.Message, "Success.")
+	}
+	if res.PID == 0 {
+		t.Errorf("output pid must not be %d, but it is", 0)
+	}
+	if res.Network.Instance == 0 {
+		t.Errorf("output instance ID must not be %d, but it is", 0)
+	}
+	pattern := fmt.Sprintf(`realtime_%s_\d{14}`, name)
+	if !regexp.MustCompile(pattern).MatchString(res.Network.Name) {
 		t.Errorf("output network name does not match valid pattern.")
 	}
 }
