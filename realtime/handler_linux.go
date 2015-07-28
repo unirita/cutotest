@@ -8,6 +8,6 @@ func makeBatchFileName(baseName string) string {
 	return baseName + ".sh"
 }
 
-func waitProcessByPID(pid int) {
-	time.Sleep(time.Second * 5)
+func waitProcessByPID(pid, seconds int) {
+	time.Sleep(time.Second * seconds)
 }

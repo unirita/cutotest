@@ -8,7 +8,7 @@ func makeBatchFileName(baseName string) string {
 	return baseName + ".bat"
 }
 
-func waitProcessByPID(pid int) {
+func waitProcessByPID(pid, seconds int) {
 	proc, err := os.FindProcess(pid)
 	if err != nil {
 		return

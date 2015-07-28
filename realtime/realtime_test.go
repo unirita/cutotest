@@ -41,7 +41,7 @@ func TestJSONOnly_Serial(t *testing.T) {
 	assertNotRemainNetworkFile(t)
 	assertIsNotNetworkEnds(t)
 
-	waitProcessByPID(res.PID)
+	waitProcessByPID(res.PID, 5)
 	assertIsJob1to3Successed(t)
 }
 
@@ -78,7 +78,7 @@ func TestJSONOnly_Parallel(t *testing.T) {
 	assertNotRemainNetworkFile(t)
 	assertIsNotNetworkEnds(t)
 
-	waitProcessByPID(res.PID)
+	waitProcessByPID(res.PID, 5)
 	assertIsJob1to3Successed(t)
 }
 
@@ -97,7 +97,7 @@ func TestJSONOnly_WithJobDetail(t *testing.T) {
 	}
 	defer s.Kill()
 
-	ts := httptest.NewServer(outputWithJobDetail())
+	ts := httptest.NewServer(outputWithJobDetail("job1"))
 	defer ts.Close()
 
 	r := util.NewRealtime()
@@ -113,9 +113,8 @@ func TestJSONOnly_WithJobDetail(t *testing.T) {
 	res := parseRealtimeResult(t, r.Stdout)
 	assertSuccessRealtimeOutput(t, res)
 	assertNotRemainNetworkFile(t)
-	assertIsNotNetworkEnds(t)
 
-	waitProcessByPID(res.PID)
+	waitProcessByPID(res.PID, 1)
 	assertTestjobSuccessed(t)
 	assertJoblogExists(t, "job1")
 }
