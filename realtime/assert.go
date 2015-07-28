@@ -48,6 +48,15 @@ func assertSuccessNamedRealtimeOutput(t *testing.T, res *result, name string) {
 	}
 }
 
+func assertFailedRealtimeOutput(t *testing.T, res *result, expectStatus int) {
+	if res.Status != expectStatus {
+		t.Errorf("output status => %d, want %d", res.Status, expectStatus)
+	}
+	if res.Message == "Success." {
+		t.Errorf(`res.Message must not be "Success.", but it is.`)
+	}
+}
+
 func assertNotRemainNetworkFile(t *testing.T) {
 	jobnetDir := filepath.Join(util.GetCutoRoot(), "bpmn")
 	fis, err := ioutil.ReadDir(jobnetDir)
@@ -63,7 +72,7 @@ func assertNotRemainNetworkFile(t *testing.T) {
 	}
 }
 
-func assertIsNotNetworkEnds(t *testing.T) {
+func assertIsNotNetworkEnd(t *testing.T) {
 	conn, err := db.Open(util.GetDBDirPath())
 	if err != nil {
 		t.Fatalf("DB file open failed: %v", err)
@@ -71,6 +80,22 @@ func assertIsNotNetworkEnds(t *testing.T) {
 	defer conn.Close()
 
 	nwks, err := conn.SelectJobNetworksByCond("ID=1 AND STATUS<>0")
+	if err != nil {
+		t.Fatalf("Unexpected DB error occured: %s", err)
+	}
+	if len(nwks) != 0 {
+		t.Errorf("Network must not ends, but it does.")
+	}
+}
+
+func assertIsNotNetworkStart(t *testing.T) {
+	conn, err := db.Open(util.GetDBDirPath())
+	if err != nil {
+		t.Fatalf("DB file open failed: %v", err)
+	}
+	defer conn.Close()
+
+	nwks, err := conn.SelectJobNetworksByCond("ID=1")
 	if err != nil {
 		t.Fatalf("Unexpected DB error occured: %s", err)
 	}
