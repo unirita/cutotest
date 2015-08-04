@@ -73,6 +73,7 @@ func TestDisplayresult_Default(t *testing.T) {
 
 	show := util.NewShow()
 	show.UseConfig("master.ini")
+	show.AddUTCOption()
 	rc, err := show.Run()
 	if err != nil {
 		t.Errorf("Show Run failed : %v", err)
@@ -119,6 +120,7 @@ func TestDisplayresult_JobnetSetting(t *testing.T) {
 	show := util.NewShow()
 	show.UseConfig("master.ini")
 	show.AddJobnet(verifyJn)
+	show.AddUTCOption()
 	rc, err := show.Run()
 	if err != nil {
 		t.Errorf("Show Run failed : %v", err)
@@ -155,6 +157,7 @@ func TestDisplayresult_PeriodSetting(t *testing.T) {
 	show.UseConfig("master.ini")
 	show.AddFrom(from)
 	show.AddTo(to)
+	show.AddUTCOption()
 	rc, err := show.Run()
 	if err != nil {
 		t.Errorf("Show Run failed : %v", err)
@@ -184,6 +187,7 @@ func TestDisplayresult_PeriodSetting(t *testing.T) {
 	show.UseConfig("master.ini")
 	show.AddFrom(from)
 	show.AddTo(to)
+	show.AddUTCOption()
 	rc, err = show.Run()
 	if err != nil {
 		t.Errorf("Show Run failed : %v", err)
@@ -213,6 +217,7 @@ func TestDisplayresult_StatusSetting(t *testing.T) {
 	show := util.NewShow()
 	show.UseConfig("master.ini")
 	show.AddStatus(status)
+	show.AddUTCOption()
 	rc, err := show.Run()
 	if err != nil {
 		t.Errorf("Show Run failed : %v", err)
@@ -243,6 +248,7 @@ func TestDisplayresult_StatusSetting(t *testing.T) {
 	show = util.NewShow()
 	show.UseConfig("master.ini")
 	show.AddStatus(status)
+	show.AddUTCOption()
 	rc, err = show.Run()
 	if err != nil {
 		t.Errorf("Show Run failed : %v", err)
@@ -273,6 +279,7 @@ func TestDisplayresult_StatusSetting(t *testing.T) {
 	show = util.NewShow()
 	show.UseConfig("master.ini")
 	show.AddStatus(status)
+	show.AddUTCOption()
 	rc, err = show.Run()
 	if err != nil {
 		t.Errorf("Show Run failed : %v", err)
@@ -305,6 +312,7 @@ func TestDisplayresult_FormatSetting(t *testing.T) {
 	show := util.NewShow()
 	show.UseConfig("master.ini")
 	show.AddFormat(format)
+	show.AddUTCOption()
 	rc, err := show.Run()
 	if err != nil {
 		t.Errorf("Show Run failed : %v", err)
@@ -337,6 +345,7 @@ func TestDisplayresult_FormatSetting(t *testing.T) {
 	show = util.NewShow()
 	show.UseConfig("master.ini")
 	show.AddFormat(format)
+	show.AddUTCOption()
 	rc, err = show.Run()
 	if err != nil {
 		t.Errorf("Show Run failed : %v", err)
@@ -373,6 +382,7 @@ func TestDisplayresult_MultiSetting(t *testing.T) {
 	show.AddStatus(status)
 	show.AddFrom(from)
 	show.AddTo(to)
+	show.AddUTCOption()
 	rc, err := show.Run()
 	if err != nil {
 		t.Errorf("Show Run failed : %v", err)

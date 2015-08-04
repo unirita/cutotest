@@ -61,3 +61,7 @@ func (s *Show) AddStatus(status string) {
 func (s *Show) AddFormat(format string) {
 	s.params = append(s.params, "-format="+format)
 }
+
+func (s *Show) AddUTCOption() {
+	s.params = append(s.params, "-utc")
+}
