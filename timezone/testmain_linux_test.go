@@ -45,6 +45,7 @@ func realTestMain(m *testing.M) int {
 		return 1
 	}
 	complementJobDetail(hostUTC, hostMST)
+	complementDB()
 
 	servant := util.NewServant()
 	servant.UseConfig("servant.ini")
