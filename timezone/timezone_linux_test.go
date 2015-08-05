@@ -2,17 +2,18 @@ package timezone
 
 import (
 	"fmt"
+	"os"
 	"testing"
 	"time"
 
 	"github.com/unirita/cutotest/util/container"
 )
 
+const imageName = "cuto/servant"
+
 func TestMain(m *testing.M) {
 	os.Exit(realTestMain(m))
 }
-
-const imageName = "cuto/servant"
 
 func realTestMain(m *testing.M) int {
 	if _, offset := time.Now().Zone(); offset/3600 != 9 {
