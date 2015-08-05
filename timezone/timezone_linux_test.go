@@ -65,7 +65,7 @@ func TestNetworkTimestamp_UTC(t *testing.T) {
 
 	testnet := findNetworkResult(jsData.Jobnetworks, "timezone")
 	if testnet == nil {
-		t.Errorf("Network result not found.", "timezone")
+		t.Fatalf("Network result not found.", "timezone")
 	}
 	if !isTimeUTC(testnet.StartDate) {
 		t.Error("Network startdate is not utc.")
@@ -95,6 +95,20 @@ func TestJobTimestamp_UTC(t *testing.T) {
 	}
 	if len(testnet.Jobs) != 3 {
 		t.Fatalf("len(testnet.Jobs) => %d, wants %d.", len(testnet.Jobs), 3)
+	}
+	for _, job := range testnet.Jobs {
+		if !isTimeUTC(job.StartDate) {
+			t.Errorf("Job[%s] startdate is not utc.", job.Jobname)
+		}
+		if !isTimeUTC(job.EndDate) {
+			t.Errorf("Job[%s] enddate is not utc.", job.Jobname)
+		}
+		if !isTimeUTC(job.CreateDate) {
+			t.Errorf("Job[%s] record createdate is not utc.", job.Jobname)
+		}
+		if !isTimeUTC(job.UpdateDate) {
+			t.Errorf("Job[%s] record updatedate is not utc.", job.Jobname)
+		}
 	}
 }
 
