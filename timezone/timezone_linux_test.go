@@ -45,7 +45,7 @@ func isTodayInUTC() bool {
 	return time.Now().Hour() >= 9
 }
 
-func isTimeUTC(string timeStr) bool {
+func isTimeUTC(timeStr string) bool {
 	now := time.Now().UTC()
 	target, err := time.ParseInLocation(timeFormat, timeStr, time.UTC)
 	if err != nil {
