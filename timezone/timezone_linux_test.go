@@ -6,6 +6,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/unirita/cutotest/util"
 	"github.com/unirita/cutotest/util/container"
 )
 
@@ -29,6 +30,26 @@ func realTestMain(m *testing.M) int {
 	cntMST.SetTimezone("MST")
 	cntMST.Start()
 	defer cntMST.Terminate()
+
+	util.InitCutoRoot()
+	util.DeployTestData("timezone")
+	complementJobDetail(cntUTC.IPAddress(), cntMST.IPAddress())
+
+	s := util.NewServant()
+	s.UseConfig("servant.ini")
+	if err := s.Start(); err != nil {
+		fmt.Printf("Servant start failed: %s\n", err)
+		return 1
+	}
+	defer s.Kill()
+
+	m := util.NewMaster()
+	m.UseConfig("master.ini")
+	_, err = m.Run("timezone")
+	if err != nil {
+		fmt.Printf("Master run failed: %s", err)
+		return 1
+	}
 
 	return m.Run()
 }
