@@ -17,6 +17,7 @@ func TestMain(m *testing.M) {
 }
 
 func realTestMain(m *testing.M) int {
+	defer util.SaveEvidence("timezone")
 	if _, offset := time.Now().Zone(); offset/3600 != 9 {
 		fmt.Println("Timezone must be +0900.")
 		return 1
