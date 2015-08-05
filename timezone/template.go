@@ -15,8 +15,8 @@ type hostParams struct {
 
 func complementJobDetail(hostUTC, hostMST string) error {
 	params := new(hostParams)
-	params.CntUTC(hostUTC)
-	params.CntMST(hostMST)
+	params.CntUTC = hostUTC
+	params.CntMST = hostMST
 
 	path := filepath.Join(util.GetCutoRoot(), "bpmn", "timezone.csv")
 	tpl, err := template.ParseFiles(path)
