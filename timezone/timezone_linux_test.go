@@ -31,22 +31,32 @@ func realTestMain(m *testing.M) int {
 	cntMST.Start()
 	defer cntMST.Terminate()
 
+	hostUTC, err := cntUTC.IPAddress()
+	if err != nil {
+		fmt.Printf("Could not get container hostname.")
+		return 1
+	}
+	hostMST, err := cntMST.IPAddress()
+	if err != nil {
+		fmt.Printf("Could not get container hostname.")
+		return 1
+	}
+
 	util.InitCutoRoot()
 	util.DeployTestData("timezone")
-	complementJobDetail(cntUTC.IPAddress(), cntMST.IPAddress())
+	complementJobDetail(hostUTC, hostMST)
 
-	s := util.NewServant()
-	s.UseConfig("servant.ini")
-	if err := s.Start(); err != nil {
+	servant := util.NewServant()
+	servant.UseConfig("servant.ini")
+	if err := servant.Start(); err != nil {
 		fmt.Printf("Servant start failed: %s\n", err)
 		return 1
 	}
-	defer s.Kill()
+	defer servant.Kill()
 
-	m := util.NewMaster()
-	m.UseConfig("master.ini")
-	_, err = m.Run("timezone")
-	if err != nil {
+	master := util.NewMaster()
+	master.UseConfig("master.ini")
+	if _, err := master.Run("timezone"); err != nil {
 		fmt.Printf("Master run failed: %s", err)
 		return 1
 	}
