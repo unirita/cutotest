@@ -52,7 +52,7 @@ func isTodayInUTC() bool {
 }
 
 func TestNetworkTimestamp(t *testing.T) {
-	output := runShow(t)
+	output := runShow(t, true)
 	jsData, err := parseShowOutput(output)
 	if err != nil {
 		t.Log("Failed to parse output of show utility.")
