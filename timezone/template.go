@@ -1,7 +1,6 @@
 package timezone
 
 import (
-	"fmt"
 	"os"
 	"path/filepath"
 	"text/template"
