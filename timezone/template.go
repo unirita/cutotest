@@ -39,8 +39,8 @@ func complementJobDetail(hostUTC, hostMST string) error {
 }
 
 type dateParams struct {
-	Today     string
-	Yesterday string
+	Today string
+	Ysday string
 }
 
 func complementDB() error {
@@ -49,7 +49,7 @@ func complementDB() error {
 
 	params := new(dateParams)
 	params.Today = today.Format("2006-01-02")
-	params.Yesterday = yesterday.Format("2006-01-02")
+	params.Ysday = yesterday.Format("2006-01-02")
 
 	path := filepath.Join(util.GetCutoRoot(), "data", "cuto.sqlite")
 	tpl, err := template.ParseFiles(path)
