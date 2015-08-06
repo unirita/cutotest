@@ -257,11 +257,16 @@ func TestJoblogTimestamp_Parameter(t *testing.T) {
 	defer file.Close()
 
 	scanner := bufio.NewScanner(file)
+	isScanned := false
 	for scanner.Scan() {
+		isScanned = true
 		line := scanner.Text()
 		if !isTimeLocal(line) {
 			t.Errorf("Parameter[%s] is not local timestamp.", line)
 		}
+	}
+	if !isScanned {
+		t.Errorf("Joblog[%s] is empty.", joblogs[0])
 	}
 }
 
