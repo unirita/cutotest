@@ -43,7 +43,7 @@ type dateParams struct {
 }
 
 func complementDB() error {
-	yesterday := today.AddDate(0, 0, -1)
+	yesterday := time.Now().AddDate(0, 0, -1)
 
 	params := new(dateParams)
 	params.Ysday = yesterday.Format("2006-01-02")
