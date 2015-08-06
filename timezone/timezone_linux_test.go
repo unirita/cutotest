@@ -290,3 +290,24 @@ func TestLogTimestamp_Master(t *testing.T) {
 		t.Log(firstLine)
 	}
 }
+
+func TestLogTimestamp_Servant(t *testing.T) {
+	path := filepath.Join(util.GetCutoRoot(), "log", "servant.log")
+	file, err := os.Open(path)
+	if err != nil {
+		t.Fatalf("Could not open servant log[%s].", path)
+	}
+	defer file.Close()
+
+	scanner := bufio.NewScanner(file)
+	if !scanner.Scan() {
+		t.Fatalf("Master log[%s] is empty.", path)
+	}
+	firstLine := scanner.Text()
+	timestamp := firstLine[:len(timeFormat)]
+	if !isTimeLocal(timestamp) {
+		t.Error("Timestamp in servant log is not local timezone.")
+		t.Log("Line example:")
+		t.Log(firstLine)
+	}
+}
