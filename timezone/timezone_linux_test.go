@@ -57,7 +57,7 @@ func isTimeUTC(timeStr string) bool {
 
 func isTimeLocal(timeStr string) bool {
 	now := time.Now()
-	target, err := time.Parse(timeFormat, timeStr)
+	target, err := time.ParseInLocation(timeFormat, timeStr, time.Local)
 	if err != nil {
 		return false
 	}
@@ -93,7 +93,6 @@ func TestNetworkTimestamp_UTC(t *testing.T) {
 
 func TestNetworkTimestamp_Local(t *testing.T) {
 	output := runShow(t, false)
-	t.Log(output)
 	jsData, err := parseShowOutput(output)
 	if err != nil {
 		t.Log("Failed to parse output of show utility.")
