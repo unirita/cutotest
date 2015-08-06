@@ -3,6 +3,7 @@ package timezone
 import (
 	"bufio"
 	"os"
+	"path/filepath"
 	"strings"
 	"testing"
 	"time"
@@ -261,5 +262,26 @@ func TestJoblogTimestamp_Parameter(t *testing.T) {
 		if !isTimeLocal(line) {
 			t.Errorf("Parameter[%s] is not local timestamp.", line)
 		}
+	}
+}
+
+func TestLogTimestamp_Master(t *testing.T) {
+	path := filepath.Join(util.GetCutoRoot(), "log", "master.log")
+	file, err := os.Open(path)
+	if err != nil {
+		t.Fatalf("Could not open master log[%s].", path)
+	}
+	defer file.Close()
+
+	scanner := bufio.NewScanner(file)
+	if !scanner.Scan() {
+		t.Fatalf("Master log[%s] is empty.", path)
+	}
+	firstLine := scanner.Text()
+	timestamp := firstLine[:len(timeFormat)]
+	if !isTimeLocal(firstLine) {
+		t.Error("Timestamp in master log is not local timezone.")
+		t.Log("Line example:")
+		t.Log(firstLine)
 	}
 }
