@@ -188,13 +188,13 @@ func TestDateBorder_UTC(t *testing.T) {
 	}
 	if isTodayInUTC() {
 		todaynet := findNetworkResult(jsData.Jobnetworks, "today")
-		if todaynet == nil {
-			t.Errorf("Network[%s] result not found.", "today")
+		if todaynet != nil {
+			t.Errorf("Network[%s] result must not found, but did it.", "today")
 		}
 	} else {
 		yesterdaynet := findNetworkResult(jsData.Jobnetworks, "yesterday")
-		if yesterdaynet != nil {
-			t.Errorf("Network[%s] result must not found, but did it.", "yesterday")
+		if yesterdaynet == nil {
+			t.Errorf("Network[%s] result not found.", "yesterday")
 		}
 	}
 }
@@ -208,13 +208,13 @@ func TestDateBorder_Local(t *testing.T) {
 	}
 	if isTodayInUTC() {
 		todaynet := findNetworkResult(jsData.Jobnetworks, "today")
-		if todaynet != nil {
-			t.Errorf("Network[%s] result must not found, but did it.", "today")
+		if todaynet == nil {
+			t.Errorf("Network[%s] result not found.", "today")
 		}
 	} else {
 		yesterdaynet := findNetworkResult(jsData.Jobnetworks, "yesterday")
-		if yesterdaynet == nil {
-			t.Errorf("Network[%s] result not found.", "yesterday")
+		if yesterdaynet != nil {
+			t.Errorf("Network[%s] result must not found, but did it.", "yesterday")
 		}
 	}
 }
