@@ -1,6 +1,8 @@
 package timezone
 
 import (
+	"bufio"
+	"os"
 	"strings"
 	"testing"
 	"time"
@@ -233,10 +235,31 @@ func TestJoblog_TimestampInFilename(t *testing.T) {
 	format := "20060102150405"
 	target, err := time.ParseInLocation(format, timeStr, time.Local)
 	if err != nil {
-		t.Fatalf("Failed to parse joblog filename as time format.")
+		t.Fatalf("Failed to parse joblog filename[%s] as time format.", joblogs[0])
 	}
 	diffSec := now.Sub(target).Seconds()
 	if diffSec >= 300 || -300 >= diffSec {
 		t.Errorf("Timestamp in joblog[%s] is not local timezone.")
+	}
+}
+
+func TestJoblog_TimestampInParameter(t *testing.T) {
+	joblogs := util.FindJoblog("joblog", 3, "receive")
+	if len(joblogs) != 1 {
+		t.Fatalf("len(joblogs) => %d, want %d.", len(joblogs), 1)
+	}
+
+	file, err := os.Open(joblogs[0])
+	if err != nil {
+		t.Fatalf("Could not open joblog[%s].", joblogs[0])
+	}
+	defer file.Close()
+
+	scanner := bufio.NewScanner(file)
+	for scanner.Scan() {
+		line := scanner.Text()
+		if !isTimeLocal(line) {
+			t.Errorf("Parameter[%s] is not local timestamp.", line)
+		}
 	}
 }
