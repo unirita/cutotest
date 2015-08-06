@@ -222,7 +222,7 @@ func TestDateBorder_Local(t *testing.T) {
 	}
 }
 
-func TestJoblog_TimestampInFilename(t *testing.T) {
+func TestJoblogTimestamp_Filename(t *testing.T) {
 	joblogs := util.FindJoblog("joblog", 3, "receive")
 	if len(joblogs) != 1 {
 		t.Fatalf("len(joblogs) => %d, want %d.", len(joblogs), 1)
@@ -243,7 +243,7 @@ func TestJoblog_TimestampInFilename(t *testing.T) {
 	}
 }
 
-func TestJoblog_TimestampInParameter(t *testing.T) {
+func TestJoblogTimestamp_Parameter(t *testing.T) {
 	joblogs := util.FindJoblog("joblog", 3, "receive")
 	if len(joblogs) != 1 {
 		t.Fatalf("len(joblogs) => %d, want %d.", len(joblogs), 1)
