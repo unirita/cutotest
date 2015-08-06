@@ -1,6 +1,7 @@
 package timezone
 
 import (
+	"strings"
 	"testing"
 	"time"
 
@@ -225,9 +226,12 @@ func TestJoblog_TimestampInFilename(t *testing.T) {
 		t.Fatalf("len(joblogs) => %d, want %d.", len(joblogs), 1)
 	}
 
+	parts := strings.Split(joblogs[0], ".")
+	timeStr := parts[len(parts)-3]
+
 	now := time.Now()
-	format := "3.receive.job3.20060102150405.000.log"
-	target, err := time.ParseInLocation(format, joblogs[0], time.Local)
+	format := "20060102150405"
+	target, err := time.ParseInLocation(format, timeStr, time.Local)
 	if err != nil {
 		t.Fatalf("Failed to parse joblog filename as time format.")
 	}
