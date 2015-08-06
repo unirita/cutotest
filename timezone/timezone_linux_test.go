@@ -279,7 +279,7 @@ func TestLogTimestamp_Master(t *testing.T) {
 	}
 	firstLine := scanner.Text()
 	timestamp := firstLine[:len(timeFormat)]
-	if !isTimeLocal(firstLine) {
+	if !isTimeLocal(timestamp) {
 		t.Error("Timestamp in master log is not local timezone.")
 		t.Log("Line example:")
 		t.Log(firstLine)
