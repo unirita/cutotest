@@ -218,3 +218,21 @@ func TestDateBorder_Local(t *testing.T) {
 		}
 	}
 }
+
+func TestJoblog_TimestampInFilename(t *testing.T) {
+	joblogs := util.FindJoblog("joblog", 3, "receive")
+	if len(joblogs) != 1 {
+		t.Fatalf("len(joblogs) => %d, want %d.", len(joblogs), 1)
+	}
+
+	now := time.Now()
+	format := "3.receive.job3.20060102150405.000.log"
+	target, err := time.ParseInLocation(format, joblogs[0], time.Local)
+	if err != nil {
+		t.Fatalf("Failed to parse joblog filename as time format.")
+	}
+	diffSec := now.Sub(target).Seconds()
+	if diffSec >= 300 || -300 >= diffSec {
+		t.Errorf("Timestamp in joblog[%s] is not local timezone.")
+	}
+}
