@@ -93,6 +93,7 @@ func TestNetworkTimestamp_UTC(t *testing.T) {
 
 func TestNetworkTimestamp_Local(t *testing.T) {
 	output := runShow(t, false)
+	t.Log(output)
 	jsData, err := parseShowOutput(output)
 	if err != nil {
 		t.Log("Failed to parse output of show utility.")
