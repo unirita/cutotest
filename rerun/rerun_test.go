@@ -14,7 +14,7 @@ import (
 
 var masterLog = filepath.Join(util.GetCutoRoot(), "log", "master.log")
 
-func TestRerunSerial(t *testing.T) {
+func TestRerun_FlowSerial(t *testing.T) {
 	defer util.SaveEvidence("rerun", "flow_serial")
 	util.InitCutoRoot()
 	util.DeployTestData("rerun")
@@ -50,7 +50,7 @@ func TestRerunSerial(t *testing.T) {
 	}
 }
 
-func TestRerunParallel(t *testing.T) {
+func TestRerun_FlowParallel(t *testing.T) {
 	defer util.SaveEvidence("rerun", "flow_parallel")
 	util.InitCutoRoot()
 	util.DeployTestData("rerun")
