@@ -35,3 +35,11 @@ func (m *Master) Run(jobnet string) (int, error) {
 		return m.Exec("-n", jobnet, "-s", "-c", m.config)
 	}
 }
+
+func (m *Master) Rerun(instanceID string) (int, error) {
+	if len(m.config) == 0 {
+		return m.Exec("-r", instanceID)
+	} else {
+		return m.Exec("-r", instanceID, "-c", m.config)
+	}
+}
