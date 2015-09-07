@@ -1,0 +1,24 @@
+<definitions>
+  <process>
+    <startEvent id="start"/>
+    <endEvent id="end"/>
+    <serviceTask id="j1" name="job1"/>
+    <serviceTask id="j2" name="job2"/>
+    <serviceTask id="j3" name="job3"/>
+    <serviceTask id="j4" name="job4"/>
+    <serviceTask id="j5" name="job5"/>
+    <serviceTask id="j6" name="job6"/>
+    <parallelGateway id="gw1"/>
+    <parallelGateway id="gw2"/>
+    <sequenceFlow sourceRef="start" targetRef="j1"/>
+    <sequenceFlow sourceRef="j1" targetRef="gw1"/>
+    <sequenceFlow sourceRef="gw1" targetRef="j2"/>
+    <sequenceFlow sourceRef="j2" targetRef="j3"/>
+    <sequenceFlow sourceRef="j3" targetRef="gw2"/>
+    <sequenceFlow sourceRef="gw1" targetRef="j4"/>
+    <sequenceFlow sourceRef="j4" targetRef="j5"/>
+    <sequenceFlow sourceRef="j5" targetRef="gw2"/>
+    <sequenceFlow sourceRef="gw2" targetRef="j6"/>
+    <sequenceFlow sourceRef="j6" targetRef="end"/>
+  </process>
+</definitions>
