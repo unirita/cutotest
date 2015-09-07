@@ -49,6 +49,42 @@ func TestRerunSerial(t *testing.T) {
 	}
 }
 
+func TestRerunParallel(t *testing.T) {
+	defer util.SaveEvidence("rerun", "flow_parallel")
+	util.InitCutoRoot()
+	util.DeployTestData("rerun")
+
+	s := util.NewServant()
+	s.UseConfig("servant.ini")
+	if err := s.Start(); err != nil {
+		t.Fatalf("Servant start failed: %s", err)
+	}
+	defer s.Kill()
+
+	m := util.NewMaster()
+	m.UseConfig("flow_parallel.ini")
+	rc, err := m.Rerun("1")
+	if err != nil {
+		t.Fatalf("Master start failed: %")
+	}
+	if rc != 0 {
+		t.Fatalf("Master RC is not %d", 0)
+	}
+
+	if isExecuted(1, "job2", masterLog) {
+		t.Errorf("JOB [%s] must not be executed, but it was.", "job2")
+	}
+	if isExecuted(1, "job4", masterLog) {
+		t.Errorf("JOB [%s] must not be executed, but it was.", "job4")
+	}
+	if !isExecuted(1, "job3", masterLog) {
+		t.Errorf("JOB [%s] must be executed, but it was not.", "job3")
+	}
+	if !isExecuted(1, "job5", masterLog) {
+		t.Errorf("JOB [%s] must be executed, but it was not.", "job5")
+	}
+}
+
 func isExecuted(instanceID int, jobName string, logfile string) bool {
 	file, err := os.Open(logfile)
 	if err != nil {
