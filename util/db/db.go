@@ -28,6 +28,7 @@ type Job struct {
 	End    string
 	Status int
 	RC     int
+	Var    string
 }
 
 const driver = "sqlite3"
@@ -73,10 +74,10 @@ func (c *Connection) SelectJobNetworksByCond(cond string) ([]*JobNetwork, error)
 }
 
 func (c *Connection) SelectJob(nid int, jid string) (*Job, error) {
-	query := "SELECT JOBNAME, STARTDATE, ENDDATE, STATUS, RC FROM JOB WHERE ID = ? AND JOBID = ?"
+	query := "SELECT JOBNAME, STARTDATE, ENDDATE, STATUS, RC, VARIABLE FROM JOB WHERE ID = ? AND JOBID = ?"
 	row := c.db.QueryRow(query, nid, jid)
 	j := new(Job)
-	err := row.Scan(&j.Name, &j.Start, &j.End, &j.Status, &j.RC)
+	err := row.Scan(&j.Name, &j.Start, &j.End, &j.Status, &j.RC, &j.Var)
 	if err != nil {
 		return nil, err
 	}
@@ -86,7 +87,7 @@ func (c *Connection) SelectJob(nid int, jid string) (*Job, error) {
 }
 
 func (c *Connection) SelectJobsByCond(condition string) ([]*Job, error) {
-	query := "SELECT ID, JOBID, JOBNAME, STARTDATE, ENDDATE, STATUS, RC FROM JOB WHERE " + condition
+	query := "SELECT ID, JOBID, JOBNAME, STARTDATE, ENDDATE, STATUS, RC, VARIABLE FROM JOB WHERE " + condition
 	jobs := make([]*Job, 0)
 	rows, err := c.db.Query(query)
 	if err != nil {
@@ -96,7 +97,7 @@ func (c *Connection) SelectJobsByCond(condition string) ([]*Job, error) {
 
 	for rows.Next() {
 		j := new(Job)
-		rows.Scan(&j.NID, &j.JID, &j.Name, &j.Start, &j.End, &j.Status, &j.RC)
+		rows.Scan(&j.NID, &j.JID, &j.Name, &j.Start, &j.End, &j.Status, &j.RC, &j.Var)
 		jobs = append(jobs, j)
 	}
 	return jobs, nil

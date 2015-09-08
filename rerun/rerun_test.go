@@ -10,6 +10,7 @@ import (
 	"time"
 
 	"github.com/unirita/cutotest/util"
+	"github.com/unirita/cutotest/util/db"
 )
 
 var masterLog = filepath.Join(util.GetCutoRoot(), "log", "master.log")
@@ -180,6 +181,112 @@ func testRerun_Failcase_second(t *testing.T) {
 	}
 	if !isExecuted(1, "job6", masterLog) {
 		t.Errorf("JOB [%s] must be executed, but it was not.", "job6")
+	}
+}
+
+func TestRerun_JobCheck_Normal(t *testing.T) {
+	defer util.SaveEvidence("rerun", "jobchk_normal")
+	util.InitCutoRoot()
+	util.DeployTestData("rerun")
+
+	s := util.NewServant()
+	s.UseConfig("jobchk_normal_servant.ini")
+	if err := s.Start(); err != nil {
+		t.Fatalf("Servant start failed: %s", err)
+	}
+	defer s.Kill()
+
+	m := util.NewMaster()
+	m.UseConfig("jobchk_normal_master.ini")
+	rc, err := m.Rerun("1")
+	if err != nil {
+		t.Fatalf("Master start failed: %")
+	}
+	if rc != 0 {
+		t.Fatalf("Master RC is not %d", 0)
+	}
+
+	if isExecuted(1, "job1", masterLog) {
+		t.Errorf("JOB [%s] must not be executed, but it was.", "job1")
+	}
+	if !isExecuted(1, "job2", masterLog) {
+		t.Errorf("JOB [%s] must be executed, but it was not.", "job2")
+	}
+
+	dbfile := filepath.Join(util.GetCutoRoot(), "data", "jobchk_normal.sqlite")
+	conn, err := db.Open(dbfile)
+	if err != nil {
+		t.Fatalf("Could not open db file: %s", dbfile)
+	}
+	defer conn.Close()
+
+	job1result, err := conn.SelectJob(1, "j1")
+	if err != nil {
+		t.Fatalf("Could not read job1 result.")
+	}
+
+	if job1result.Var != "correct variable" {
+		t.Errorf("Variable of job1 is unexpected: %s", job1result.Var)
+	}
+}
+
+func TestRerun_JobCheck_Abnormal(t *testing.T) {
+	defer util.SaveEvidence("rerun", "jobchk_abnormal")
+	util.InitCutoRoot()
+	util.DeployTestData("rerun")
+
+	s := util.NewServant()
+	s.UseConfig("jobchk_abnormal_servant.ini")
+	if err := s.Start(); err != nil {
+		t.Fatalf("Servant start failed: %s", err)
+	}
+	defer s.Kill()
+
+	m := util.NewMaster()
+	m.UseConfig("jobchk_abnormal_master.ini")
+	rc, err := m.Rerun("1")
+	if err != nil {
+		t.Fatalf("Master start failed: %")
+	}
+	if rc != 0 {
+		t.Fatalf("Master RC is not %d", 0)
+	}
+
+	if !isExecuted(1, "job1", masterLog) {
+		t.Errorf("JOB [%s] must be executed, but it was not.", "job1")
+	}
+	if !isExecuted(1, "job2", masterLog) {
+		t.Errorf("JOB [%s] must be executed, but it was not.", "job2")
+	}
+}
+
+func TestRerun_JobCheck_Running(t *testing.T) {
+	defer util.SaveEvidence("rerun", "jobchk_running")
+	util.InitCutoRoot()
+	util.DeployTestData("rerun")
+
+	s := util.NewServant()
+	s.UseConfig("jobchk_running_servant.ini")
+	if err := s.Start(); err != nil {
+		t.Fatalf("Servant start failed: %s", err)
+	}
+	defer s.Kill()
+
+	m := util.NewMaster()
+	m.UseConfig("jobchk_running_master.ini")
+	rc, err := m.Rerun("1")
+	if err != nil {
+		t.Fatalf("Master start failed: %")
+	}
+	if rc == 0 {
+		t.Fatalf("Master RC must not be %d", 0)
+	}
+
+	if isExecuted(1, "job1", masterLog) {
+		t.Errorf("JOB [%s] must not be executed, but it was.", "job1")
+	}
+	if isExecuted(1, "job2", masterLog) {
+		t.Errorf("JOB [%s] must not be executed, but it was.", "job2")
 	}
 }
 
