@@ -290,6 +290,56 @@ func TestRerun_JobCheck_Running(t *testing.T) {
 	}
 }
 
+func TestRerun_Node_Primary(t *testing.T) {
+	defer util.SaveEvidence("rerun", "node_primary")
+	util.InitCutoRoot()
+	util.DeployTestData("rerun")
+
+	s := util.NewServant()
+	s.UseConfig("servant.ini")
+	if err := s.Start(); err != nil {
+		t.Fatalf("Servant start failed: %s", err)
+	}
+	defer s.Kill()
+
+	m := util.NewMaster()
+	m.UseConfig("node.ini")
+	rc, err := m.Rerun("1")
+	if err != nil {
+		t.Fatalf("Master start failed: %")
+	}
+	if rc == 0 {
+		t.Fatalf("Master RC must not be %d", 0)
+	}
+}
+
+func TestRerun_Node_Secondary(t *testing.T) {
+	defer util.SaveEvidence("rerun", "node_secondary")
+	util.InitCutoRoot()
+	util.DeployTestData("rerun")
+
+	s := util.NewServant()
+	s.UseConfig("servant.ini")
+	if err := s.Start(); err != nil {
+		t.Fatalf("Servant start failed: %s", err)
+	}
+	defer s.Kill()
+
+	m := util.NewMaster()
+	m.UseConfig("node.ini")
+	rc, err := m.Rerun("2")
+	if err != nil {
+		t.Fatalf("Master start failed: %")
+	}
+	if rc != 0 {
+		t.Fatalf("Master RC is not %d", 0)
+	}
+
+	if !isExecuted(2, "job1", masterLog) {
+		t.Errorf("JOB [%s] must be executed, but it was not.", "job1")
+	}
+}
+
 func isExecuted(instanceID int, jobName string, logfile string) bool {
 	file, err := os.Open(logfile)
 	if err != nil {
