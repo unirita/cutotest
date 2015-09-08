@@ -369,7 +369,7 @@ func TestRerun_ErrorCase_AlreadyNormalEnd(t *testing.T) {
 }
 
 func TestRerun_ErrorCase_AlreadyWarnEnd(t *testing.T) {
-	defer util.SaveEvidence("rerun", "errorcase_normalend")
+	defer util.SaveEvidence("rerun", "errorcase_warnend")
 	util.InitCutoRoot()
 	util.DeployTestData("rerun")
 
@@ -396,7 +396,7 @@ func TestRerun_ErrorCase_AlreadyWarnEnd(t *testing.T) {
 }
 
 func TestRerun_ErrorCase_NotExecuted(t *testing.T) {
-	defer util.SaveEvidence("rerun", "errorcase_normalend")
+	defer util.SaveEvidence("rerun", "errorcase_notexecuted")
 	util.InitCutoRoot()
 	util.DeployTestData("rerun")
 
