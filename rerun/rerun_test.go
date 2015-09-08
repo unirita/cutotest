@@ -6,6 +6,7 @@ import (
 	"os"
 	"path/filepath"
 	"regexp"
+	"strings"
 	"testing"
 	"time"
 
@@ -340,6 +341,87 @@ func TestRerun_Node_Secondary(t *testing.T) {
 	}
 }
 
+func TestRerun_ErrorCase_AlreadyNormalEnd(t *testing.T) {
+	defer util.SaveEvidence("rerun", "errorcase_normalend")
+	util.InitCutoRoot()
+	util.DeployTestData("rerun")
+
+	s := util.NewServant()
+	s.UseConfig("servant.ini")
+	if err := s.Start(); err != nil {
+		t.Fatalf("Servant start failed: %s", err)
+	}
+	defer s.Kill()
+
+	m := util.NewMaster()
+	m.UseConfig("errorcase.ini")
+	rc, err := m.Rerun("1")
+	if err != nil {
+		t.Fatalf("Master start failed: %")
+	}
+	if rc != 0 {
+		t.Fatalf("Master RC is not %d", 0)
+	}
+
+	if !containsInFile("CTM029I", masterLog) {
+		t.Errorf("Message Code [%s] must be output, but it was not.", "CTM029I")
+	}
+}
+
+func TestRerun_ErrorCase_AlreadyWarnEnd(t *testing.T) {
+	defer util.SaveEvidence("rerun", "errorcase_normalend")
+	util.InitCutoRoot()
+	util.DeployTestData("rerun")
+
+	s := util.NewServant()
+	s.UseConfig("servant.ini")
+	if err := s.Start(); err != nil {
+		t.Fatalf("Servant start failed: %s", err)
+	}
+	defer s.Kill()
+
+	m := util.NewMaster()
+	m.UseConfig("errorcase.ini")
+	rc, err := m.Rerun("2")
+	if err != nil {
+		t.Fatalf("Master start failed: %")
+	}
+	if rc != 0 {
+		t.Fatalf("Master RC is not %d", 0)
+	}
+
+	if !containsInFile("CTM029I", masterLog) {
+		t.Errorf("Message Code [%s] must be output, but it was not.", "CTM029I")
+	}
+}
+
+func TestRerun_ErrorCase_NotExecuted(t *testing.T) {
+	defer util.SaveEvidence("rerun", "errorcase_normalend")
+	util.InitCutoRoot()
+	util.DeployTestData("rerun")
+
+	s := util.NewServant()
+	s.UseConfig("servant.ini")
+	if err := s.Start(); err != nil {
+		t.Fatalf("Servant start failed: %s", err)
+	}
+	defer s.Kill()
+
+	m := util.NewMaster()
+	m.UseConfig("errorcase.ini")
+	rc, err := m.Rerun("3")
+	if err != nil {
+		t.Fatalf("Master start failed: %")
+	}
+	if rc == 0 {
+		t.Fatalf("Master RC must not be %d", 0)
+	}
+
+	if !containsInFile("Network[id = 3] not found.", masterLog) {
+		t.Error("Expected error message was not output.")
+	}
+}
+
 func isExecuted(instanceID int, jobName string, logfile string) bool {
 	file, err := os.Open(logfile)
 	if err != nil {
@@ -353,6 +435,23 @@ func isExecuted(instanceID int, jobName string, logfile string) bool {
 	s := bufio.NewScanner(file)
 	for s.Scan() {
 		if matcher.MatchString(s.Text()) {
+			return true
+		}
+	}
+
+	return false
+}
+
+func containsInFile(str string, logfile string) bool {
+	file, err := os.Open(logfile)
+	if err != nil {
+		return false
+	}
+	defer file.Close()
+
+	s := bufio.NewScanner(file)
+	for s.Scan() {
+		if strings.Contains(s.Text(), str) {
 			return true
 		}
 	}
