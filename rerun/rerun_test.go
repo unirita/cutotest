@@ -422,6 +422,45 @@ func TestRerun_ErrorCase_NotExecuted(t *testing.T) {
 	}
 }
 
+func TestRerun_ErrorCase_Duplicate(t *testing.T) {
+	defer util.SaveEvidence("rerun", "errorcase_duplicate")
+	util.InitCutoRoot()
+	util.DeployTestData("rerun")
+
+	s := util.NewServant()
+	s.UseConfig("servant.ini")
+	if err := s.Start(); err != nil {
+		t.Fatalf("Servant start failed: %s", err)
+	}
+	defer s.Kill()
+
+	m := util.NewMaster()
+	m.UseConfig("duplicate.ini")
+
+	runEndCh := make(chan struct{})
+
+	go func() {
+		m.Run("duplicate")
+		close(runEndCh)
+	}()
+
+	time.Sleep(500 * time.Millisecond)
+
+	rc, err := m.Rerun("1")
+	if err != nil {
+		t.Fatalf("Master start failed: %")
+	}
+	if rc == 0 {
+		t.Fatalf("Master RC must not be %d", 0)
+	}
+
+	<-runEndCh
+
+	if !containsInFile("still running", masterLog) {
+		t.Error("Expected error message was not output.")
+	}
+}
+
 func isExecuted(instanceID int, jobName string, logfile string) bool {
 	file, err := os.Open(logfile)
 	if err != nil {
