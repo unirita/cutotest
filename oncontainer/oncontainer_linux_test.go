@@ -33,8 +33,7 @@ func TestOnContainerJob_Joblog(t *testing.T) {
 	servant := util.NewServant()
 	servant.UseConfig("servant.ini")
 	if err := servant.Start(); err != nil {
-		fmt.Printf("Servant start failed: %s\n", err)
-		return 1
+		t.Fatalf("Servant start failed: %s\n", err)
 	}
 	defer servant.Kill()
 
