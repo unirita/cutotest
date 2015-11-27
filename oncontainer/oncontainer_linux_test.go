@@ -40,4 +40,7 @@ func TestOnContainerJob_Joblog(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Master run failed: %s", err)
 	}
+	if rc != 0 {
+		t.Fatalf("Master RC => %d, wants %d", rc, 0)
+	}
 }
