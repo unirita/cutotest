@@ -18,10 +18,6 @@ func realTestMain(m *testing.M) int {
 	c.Start()
 	defer c.Terminate()
 
-	defer util.SaveEvidence("oncontainer")
-	util.InitCutoRoot()
-	util.DeployTestData("oncontainer")
-
 	return m.Run()
 }
 
@@ -52,7 +48,7 @@ func TestOnContainerJob_GetJoblog(t *testing.T) {
 		t.Fatalf("Number of joblog => %d, wants %d", len(joblogs), 1)
 	}
 
-	if util.ContainsInFile(joblogs[0], "testparam") {
+	if !util.ContainsInFile(joblogs[0], "testparam") {
 		t.Error("Joblog was not output correctly.")
 	}
 }
@@ -71,7 +67,7 @@ func TestOnContainerJob_GetRC(t *testing.T) {
 
 	master := util.NewMaster()
 	master.UseConfig("master.ini")
-	rc, err := master.Run("joblog")
+	rc, err := master.Run("rc")
 	if err != nil {
 		t.Fatalf("Master run failed: %s", err)
 	}
