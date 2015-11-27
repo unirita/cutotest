@@ -6,6 +6,7 @@ import (
 
 	"github.com/unirita/cutotest/util"
 	"github.com/unirita/cutotest/util/container"
+	"github.com/unirita/cutotest/util/db"
 )
 
 func TestMain(m *testing.M) {
@@ -24,8 +25,8 @@ func realTestMain(m *testing.M) int {
 	return m.Run()
 }
 
-func TestOnContainerJob_Joblog(t *testing.T) {
-	defer util.SaveEvidence("oncontainer", "joblog")
+func TestOnContainerJob_GetJoblog(t *testing.T) {
+	defer util.SaveEvidence("oncontainer", "getjoblog")
 	util.InitCutoRoot()
 	util.DeployTestData("oncontainer")
 
@@ -53,5 +54,41 @@ func TestOnContainerJob_Joblog(t *testing.T) {
 
 	if util.ContainsInFile(joblogs[0], "testparam") {
 		t.Error("Joblog was not output correctly.")
+	}
+}
+
+func TestOnContainerJob_GetRC(t *testing.T) {
+	defer util.SaveEvidence("oncontainer", "getrc")
+	util.InitCutoRoot()
+	util.DeployTestData("oncontainer")
+
+	servant := util.NewServant()
+	servant.UseConfig("servant.ini")
+	if err := servant.Start(); err != nil {
+		t.Fatalf("Servant start failed: %s\n", err)
+	}
+	defer servant.Kill()
+
+	master := util.NewMaster()
+	master.UseConfig("master.ini")
+	rc, err := master.Run("joblog")
+	if err != nil {
+		t.Fatalf("Master run failed: %s", err)
+	}
+	if rc != 0 {
+		t.Fatalf("Master RC => %d, wants %d", rc, 0)
+	}
+
+	conn, err := db.Open(util.GetDBDirPath())
+	if err != nil {
+		t.Fatalf("Database open failed: %s", err)
+	}
+	jobRecord, err := conn.SelectJob(1, "job1")
+	if err != nil {
+		t.Fatalf("Could not select job record: %s", err)
+	}
+
+	if jobRecord.RC != 123 {
+		t.Errorf("RC of job => %d, wants %d", jobRecord.RC, 123)
 	}
 }
