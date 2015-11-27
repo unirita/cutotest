@@ -19,20 +19,20 @@ func realTestMain(m *testing.M) int {
 	util.InitCutoRoot()
 	util.DeployTestData("oncontainer")
 
-	s := util.NewServant()
-	s.UseConfig("servant.ini")
-	if err := s.Start(); err != nil {
+	servant := util.NewServant()
+	servant.UseConfig("servant.ini")
+	if err := servant.Start(); err != nil {
 		t.Fatalf("Servant start failed: %s", err)
 	}
-	defer s.Kill()
+	defer servant.Kill()
 
 	return m.Run()
 }
 
 func TestOnContainerJob_Joblog(t *testing.T) {
-	m := util.NewMaster()
-	m.UseConfig("master.ini")
-	rc, err = m.Run("joblog")
+	master := util.NewMaster()
+	master.UseConfig("master.ini")
+	rc, err = master.Run("joblog")
 	if err != nil {
 		t.Fatalf("Master run failed: %s", err)
 	}
