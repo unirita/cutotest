@@ -22,6 +22,14 @@ func realTestMain(m *testing.M) int {
 	util.InitCutoRoot()
 	util.DeployTestData("oncontainer")
 
+	return m.Run()
+}
+
+func TestOnContainerJob_Joblog(t *testing.T) {
+	defer util.SaveEvidence("oncontainer", "joblog")
+	util.InitCutoRoot()
+	util.DeployTestData("oncontainer")
+
 	servant := util.NewServant()
 	servant.UseConfig("servant.ini")
 	if err := servant.Start(); err != nil {
@@ -30,10 +38,6 @@ func realTestMain(m *testing.M) int {
 	}
 	defer servant.Kill()
 
-	return m.Run()
-}
-
-func TestOnContainerJob_Joblog(t *testing.T) {
 	master := util.NewMaster()
 	master.UseConfig("master.ini")
 	rc, err := master.Run("joblog")
@@ -42,5 +46,14 @@ func TestOnContainerJob_Joblog(t *testing.T) {
 	}
 	if rc != 0 {
 		t.Fatalf("Master RC => %d, wants %d", rc, 0)
+	}
+
+	joblogs := util.FindJoblog("joblog", 1, "testjob")
+	if len(joblogs) != 1 {
+		t.Fatalf("Number of joblog => %d, wants %d", len(joblogs), 1)
+	}
+
+	if util.ContainsInFile(joblogs[0], "testparam") {
+		t.Error("Joblog was not output correctly.")
 	}
 }
