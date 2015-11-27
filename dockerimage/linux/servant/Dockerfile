@@ -1,4 +1,4 @@
-FROM centos:centos6
+FROM centos
 MAINTAINER hondata <takahiro_honda@unirita.co.jp>
 ADD cuto /cuto/
 RUN mkdir /cuto/joblog
