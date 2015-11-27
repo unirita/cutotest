@@ -15,7 +15,10 @@ func TestMain(m *testing.M) {
 
 func realTestMain(m *testing.M) int {
 	c := container.New("cuto/servant", "test/container")
-	c.Start()
+	if err := c.Start(); err != nil {
+		fmt.Printf("Could not run container: %s\n", err)
+		return 1
+	}
 	defer c.Terminate()
 
 	return m.Run()
