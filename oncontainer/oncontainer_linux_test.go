@@ -46,7 +46,7 @@ func TestOnContainerJob_Joblog(t *testing.T) {
 		t.Fatalf("Master RC => %d, wants %d", rc, 0)
 	}
 
-	joblogs := util.FindJoblog("joblog", 1, "testjob")
+	joblogs := util.FindJoblog("joblog", 1, "varout")
 	if len(joblogs) != 1 {
 		t.Fatalf("Number of joblog => %d, wants %d", len(joblogs), 1)
 	}
