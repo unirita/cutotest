@@ -1,8 +1,11 @@
 package oncontainer
 
 import (
+	"fmt"
+	"os"
 	"testing"
 
+	"github.com/unirita/cutotest/util"
 	"github.com/unirita/cutotest/util/container"
 )
 
@@ -22,7 +25,8 @@ func realTestMain(m *testing.M) int {
 	servant := util.NewServant()
 	servant.UseConfig("servant.ini")
 	if err := servant.Start(); err != nil {
-		t.Fatalf("Servant start failed: %s", err)
+		fmt.Printf("Servant start failed: %s\n", err)
+		return 1
 	}
 	defer servant.Kill()
 
@@ -32,7 +36,7 @@ func realTestMain(m *testing.M) int {
 func TestOnContainerJob_Joblog(t *testing.T) {
 	master := util.NewMaster()
 	master.UseConfig("master.ini")
-	rc, err = master.Run("joblog")
+	rc, err := master.Run("joblog")
 	if err != nil {
 		t.Fatalf("Master run failed: %s", err)
 	}
