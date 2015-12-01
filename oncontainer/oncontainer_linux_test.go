@@ -160,8 +160,8 @@ func TestOnContainerJob_Rerun(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Could not select job record: %s", err)
 	}
-	if jobRecord.Status != 0 {
-		t.Errorf("Status of job => %d, wants %d", jobRecord.Status, 0)
+	if jobRecord.Status != 1 {
+		t.Errorf("Status of job => %d, wants %d", jobRecord.Status, 1)
 	}
 	if jobRecord.RC != 210 {
 		t.Errorf("RC of job => %d, wants %d", jobRecord.RC, 210)
