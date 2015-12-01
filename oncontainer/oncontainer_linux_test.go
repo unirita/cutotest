@@ -185,7 +185,7 @@ func TestOnContainerJob_DisuseJoblog(t *testing.T) {
 			t.Log("Stdout:")
 			t.Log(servant.Stdout)
 		}
-	}
+	}()
 	defer servant.Kill()
 
 	master := util.NewMaster()
