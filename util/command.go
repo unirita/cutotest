@@ -56,11 +56,11 @@ func (c *command) Exec(arg ...string) (int, error) {
 }
 
 func (c *command) AsyncExec(arg ...string) error {
+	c.cmd = exec.Command(c.Path, arg...)
 	c.asyncStdout = new(bytes.Buffer)
 	c.asyncStderr = new(bytes.Buffer)
 	c.cmd.Stdout = c.asyncStdout
 	c.cmd.Stderr = c.asyncStderr
-	c.cmd = exec.Command(c.Path, arg...)
 	return c.cmd.Start()
 }
 
