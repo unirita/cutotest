@@ -1,0 +1,2 @@
+2015-11-01 12:34:56.123 [1111] [INF] CTS010I JOB [/cuto/jobscript/rc.sh] STARTED. INSTANCE [1] ID [job1] PID [3452].
+2015-11-01 12:36:54.123 [1111] [INF] CTS011I JOB [/cuto/jobscript/rc.sh] ENDED. INSTANCE [1] ID [job1] STATUS [9] RC [0].
