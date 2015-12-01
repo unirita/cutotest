@@ -196,7 +196,7 @@ func TestOnContainerJob_DisuseJoblog(t *testing.T) {
 		t.Errorf("Joblog must not be created, but it was.")
 	}
 
-	if !strings.Contains(master.Stdout, "testparam") {
+	if !strings.Contains(servant.Stdout, "testparam") {
 		t.Error("Stdout was not output correctly.")
 	}
 }
