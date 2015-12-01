@@ -11,11 +11,13 @@ import (
 )
 
 type command struct {
-	Path    string
-	Timeout int
-	Stdout  string
-	Stderr  string
-	cmd     *exec.Cmd
+	Path        string
+	Timeout     int
+	Stdout      string
+	Stderr      string
+	cmd         *exec.Cmd
+	asyncStdout *bytes.Buffer
+	asyncStderr *bytes.Buffer
 }
 
 func (c *command) GeneratePath(name string) {
@@ -54,11 +56,17 @@ func (c *command) Exec(arg ...string) (int, error) {
 }
 
 func (c *command) AsyncExec(arg ...string) error {
+	c.asyncStdout = new(bytes.Buffer)
+	c.asyncStderr = new(bytes.Buffer)
+	c.cmd.Stdout = c.asyncStdout
+	c.cmd.Stderr = c.asyncStderr
 	c.cmd = exec.Command(c.Path, arg...)
 	return c.cmd.Start()
 }
 
 func (c *command) Kill() {
+	c.Stdout = c.asyncStdout.String()
+	c.Stderr = c.asyncStderr.String()
 	c.cmd.Process.Kill()
 }
 
