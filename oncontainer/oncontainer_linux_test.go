@@ -180,13 +180,13 @@ func TestOnContainerJob_DisuseJoblog(t *testing.T) {
 		t.Fatalf("Servant start failed: %s\n", err)
 	}
 	defer func() {
+		servant.Kill()
 		if !strings.Contains(servant.Stdout, "testparam") {
 			t.Error("Servant stdout was not output correctly.")
 			t.Log("Stdout:")
 			t.Log(servant.Stdout)
 		}
 	}()
-	defer servant.Kill()
 
 	master := util.NewMaster()
 	master.UseConfig("master.ini")
