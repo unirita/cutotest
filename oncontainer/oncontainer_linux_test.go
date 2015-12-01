@@ -3,6 +3,7 @@ package oncontainer
 import (
 	"fmt"
 	"os"
+	"strings"
 	"testing"
 
 	"github.com/unirita/cutotest/util"
@@ -165,5 +166,37 @@ func TestOnContainerJob_Rerun(t *testing.T) {
 	}
 	if jobRecord.RC != 210 {
 		t.Errorf("RC of job => %d, wants %d", jobRecord.RC, 210)
+	}
+}
+
+func TestOnContainerJob_DisuseJoblog(t *testing.T) {
+	defer util.SaveEvidence("oncontainer", "disusejoblog")
+	util.InitCutoRoot()
+	util.DeployTestData("oncontainer")
+
+	servant := util.NewServant()
+	servant.UseConfig("servant_disusejoblog.ini")
+	if err := servant.Start(); err != nil {
+		t.Fatalf("Servant start failed: %s\n", err)
+	}
+	defer servant.Kill()
+
+	master := util.NewMaster()
+	master.UseConfig("master.ini")
+	rc, err := master.Run("joblog")
+	if err != nil {
+		t.Fatalf("Master run failed: %s", err)
+	}
+	if rc != 0 {
+		t.Fatalf("Master RC => %d, wants %d", rc, 0)
+	}
+
+	joblogs := util.FindJoblog("joblog", 2, "varout")
+	if len(joblogs) != 0 {
+		t.Errorf("Joblog must not be created, but it was.")
+	}
+
+	if !strings.Contains(master.Stdout, "testparam") {
+		t.Error("Stdout was not output correctly.")
 	}
 }
