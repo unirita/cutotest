@@ -57,8 +57,8 @@ func TestOnContainerJob_GetJoblog(t *testing.T) {
 	}
 }
 
-func TestOnContainerJob_GetRC(t *testing.T) {
-	defer util.SaveEvidence("oncontainer", "getrc")
+func TestOnContainerJob_Remote(t *testing.T) {
+	defer util.SaveEvidence("oncontainer", "remote")
 	util.InitCutoRoot()
 	util.DeployTestData("oncontainer")
 
@@ -71,7 +71,7 @@ func TestOnContainerJob_GetRC(t *testing.T) {
 
 	master := util.NewMaster()
 	master.UseConfig("master.ini")
-	rc, err := master.Run("rc")
+	rc, err := master.Run("remote")
 	if err != nil {
 		t.Fatalf("Master run failed: %s", err)
 	}
@@ -88,7 +88,7 @@ func TestOnContainerJob_GetRC(t *testing.T) {
 		t.Fatalf("Could not select job record: %s", err)
 	}
 
-	if jobRecord.RC != 123 {
+	if jobRecord.RC != 234 {
 		t.Errorf("RC of job => %d, wants %d", jobRecord.RC, 123)
 	}
 }
