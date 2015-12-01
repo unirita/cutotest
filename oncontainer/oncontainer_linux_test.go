@@ -179,6 +179,13 @@ func TestOnContainerJob_DisuseJoblog(t *testing.T) {
 	if err := servant.Start(); err != nil {
 		t.Fatalf("Servant start failed: %s\n", err)
 	}
+	defer func() {
+		if !strings.Contains(servant.Stdout, "testparam") {
+			t.Error("Servant stdout was not output correctly.")
+			t.Log("Stdout:")
+			t.Log(servant.Stdout)
+		}
+	}
 	defer servant.Kill()
 
 	master := util.NewMaster()
@@ -194,11 +201,5 @@ func TestOnContainerJob_DisuseJoblog(t *testing.T) {
 	joblogs := util.FindJoblog("joblog", 2, "varout")
 	if len(joblogs) != 0 {
 		t.Errorf("Joblog must not be created, but it was.")
-	}
-
-	if !strings.Contains(servant.Stdout, "testparam") {
-		t.Error("Servant stdout was not output correctly.")
-		t.Log("Stdout:")
-		t.Log(servant.Stdout)
 	}
 }
