@@ -197,6 +197,8 @@ func TestOnContainerJob_DisuseJoblog(t *testing.T) {
 	}
 
 	if !strings.Contains(servant.Stdout, "testparam") {
-		t.Error("Stdout was not output correctly.")
+		t.Error("Servant stdout was not output correctly.")
+		t.Log("Stdout:")
+		t.Log(servant.Stdout)
 	}
 }
