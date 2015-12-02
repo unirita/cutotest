@@ -117,10 +117,10 @@ func assertNetworkRecord(t *testing.T, conn *db.Connection, nid int, name string
 		t.Fatalf("Can't read network record: %v", err)
 	}
 	if network.Name != name {
-		t.Errorf("Unexpected JOBNETWORK.JOBNETWORK[%s]", network.Name)
+		t.Errorf("Jobnet name => %s, wants %s", network.Name, name)
 	}
 	if network.Status != status {
-		t.Errorf("Unexpected JOBNETWORK.STATUS[%d]", network.Status)
+		t.Errorf("Jobnet[%s].STATUS => %d, wants %d", name, network.Status, status)
 	}
 }
 
@@ -131,10 +131,10 @@ func assertJobStatus(t *testing.T, conn *db.Connection, nid int, jobname string,
 		t.Fatalf("Unexpected DB error occured: %s", err)
 	}
 	if len(jobs) != 1 {
-		t.Fatalf("JOBNAME[%s] must be only one.", jobname)
+		t.Fatalf("JOBNAME[%s] must be only one, but it was not.", jobname)
 	}
 	if jobs[0].Status != status {
-		t.Errorf("Unexpected JOB.STATUS[%d]", jobs[0].Status)
+		t.Errorf("Job[%s].STATUS => %d, wants %d", jobname, jobs[0].Status, status)
 	}
 }
 
