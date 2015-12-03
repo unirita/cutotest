@@ -17,7 +17,7 @@ var normalCases []testCases = getNormalCases()
 
 func getErrorCases() []testCases {
 	return []testCases{
-		{"NoServiceTask", "ProcessFlow is empty."},
+		{"NoServiceTask", "Jobnet is empty."},
 		{"NoStartEvent", "StartEvent element is required, and must be unique."},
 		{"NoEndEvent", "EndEvent element is required, and must be unique."},
 		{"MultiStartEvent", "StartEvent element is required, and must be unique."},
